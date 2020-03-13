@@ -5,7 +5,7 @@ const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = config;
 
 async function startDB(): Promise<void> {
   mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}`, {
-    dbName: isTesting ? 'grokTestDB' : DB_NAME,
+    dbName: isTesting ? 'teppetiTestDB' : DB_NAME,
     user: DB_USER,
     pass: DB_PASSWORD,
     useNewUrlParser: true,

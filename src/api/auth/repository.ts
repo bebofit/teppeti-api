@@ -1,19 +1,22 @@
 import { Model } from 'mongoose';
 import { BaseDBRepository } from '../../common/classes';
 import { IDBQueryOptions, IDBQuery } from '../../common/types';
-import { AuthUser, IAuthUser, IRefreshToken } from '../../database/models';
+import { User, IUser, IRefreshToken } from '../../database/models';
 
-class AuthUserRepository extends BaseDBRepository<IAuthUser> {
-  constructor(protected model: Model<IAuthUser>) {
+class AuthUserRepository extends BaseDBRepository<IUser> {
+  constructor(protected model: Model<IUser>) {
     super(model);
   }
 
-  findByEmail(email: string, options?: IDBQueryOptions): IDBQuery<IAuthUser> {
+  findByEmail(email: string, options?: IDBQueryOptions): IDBQuery<IUser> {
     return super.findOne({ email }, options);
   }
 
-  findByMobile(mobile: string, options?: IDBQueryOptions): IDBQuery<IAuthUser> {
-    return super.findOne({ mobile }, options);
+  getAuthUserByUsername(
+    username: string,
+    options?: IDBQueryOptions
+  ): IDBQuery<IUser> {
+    return super.findOne({ username }, options);
   }
 
   updateEmailVerificationToken(
@@ -21,7 +24,7 @@ class AuthUserRepository extends BaseDBRepository<IAuthUser> {
     emailVerificationToken: string,
     emailVerificationTokenExpiry: Date,
     options?: IDBQueryOptions
-  ): IDBQuery<IAuthUser> {
+  ): IDBQuery<IUser> {
     return super.findOneAndUpdate(
       { email, emailVerified: false },
       { emailVerificationToken, emailVerificationTokenExpiry },
@@ -35,7 +38,7 @@ class AuthUserRepository extends BaseDBRepository<IAuthUser> {
     emailVerificationToken: string,
     emailVerificationTokenExpiry: Date,
     options?: IDBQueryOptions
-  ): IDBQuery<IAuthUser> {
+  ): IDBQuery<IUser> {
     return super.findByIdAndUpdate(
       id,
       {
@@ -72,7 +75,7 @@ class AuthUserRepository extends BaseDBRepository<IAuthUser> {
     resetPasswordToken: string,
     resetPasswordTokenExpiry: Date,
     options?: IDBQueryOptions
-  ): IDBQuery<IAuthUser> {
+  ): IDBQuery<IUser> {
     return super.findOneAndUpdate(
       { email },
       { resetPasswordToken, resetPasswordTokenExpiry },
@@ -130,7 +133,7 @@ class AuthUserRepository extends BaseDBRepository<IAuthUser> {
     userId: string,
     body: any,
     options?: IDBQueryOptions
-  ): IDBQuery<IAuthUser> {
+  ): IDBQuery<IUser> {
     return super.findByIdAndUpdate(userId, { profilePicture: body }, options);
   }
 
@@ -194,6 +197,6 @@ class AuthUserRepository extends BaseDBRepository<IAuthUser> {
   }
 }
 
-const authUserRepository = new AuthUserRepository(AuthUser);
+const authUserRepository = new AuthUserRepository(User);
 
 export default authUserRepository;

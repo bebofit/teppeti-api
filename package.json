@@ -4,9 +4,9 @@
   "private": true,
   "main": "dist/index.js",
   "scripts": {
+    "seed": "ts-node scripts/seed.ts",
     "lint": "tslint -c tslint.json -p tsconfig.json --fix",
     "format": "prettier --config .prettierrc --write",
-    "seed": "ts-node scripts/seed.ts",
     "build": "tsc",
     "start": "ts-node index.ts",
     "start:prod": "node dist/index.js",

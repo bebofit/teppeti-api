@@ -5,16 +5,6 @@ import * as controller from './controller';
 
 const router = Router();
 
-router.post(
-  '/v1/registerUser',
-  isNotAuthenticated,
-  errorHandler(controller.registerUser)
-);
-
-router.post(
-  '/v1/registerMobile',
-  isNotAuthenticated,
-  errorHandler(controller.registerMobile)
-);
+router.post('/login', isNotAuthenticated, errorHandler(controller.login));
 
 export default router;

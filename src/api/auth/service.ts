@@ -14,7 +14,7 @@ import {
   isString
 } from '../../common/utils';
 import config, { isDevelopment } from '../../config';
-import { IAuthUser } from '../../database/models';
+import { IUser } from '../../database/models';
 import repository from './repository';
 
 const { JWT_SECRET } = config;
@@ -79,15 +79,57 @@ function signJWT(
   });
 }
 
+const updateLastLoginAt = (
+  userId: string,
+  options?: IDBQueryOptions
+): Promise<boolean> => repository.updateLastLoginAt(userId, options);
+
 const getAuthUserByEmail = (
   email: string,
   options?: IDBQueryOptions
-): IDBQuery<IAuthUser> => repository.findByEmail(email, options);
+): IDBQuery<IUser> => repository.findByEmail(email, options);
 
-const getAuthUserByMobile = (
-  mobile: string,
+const getAuthUserByUsername = (
+  username: string,
   options?: IDBQueryOptions
-): IDBQuery<IAuthUser> => repository.findByMobile(mobile, options);
+): IDBQuery<IUser> => repository.getAuthUserByUsername(username, options);
+
+async function createAuthUserTokenPair(
+  user: IUser,
+  options?: IDBQueryOptions
+): Promise<{ accessToken: string; refreshToken: string }> {
+  const authInfo: IAuthInfo = {
+    userId: user.id
+  };
+  const refreshTokenId = await genToken(16);
+  const createdAt = new Date();
+  const accessExpiresAt = addDays(createdAt, 1);
+  const refreshExpiresAt = addDays(createdAt, 30);
+  await repository.addRefreshToken(
+    user.id,
+    {
+      createdAt,
+      id: refreshTokenId,
+      expiresAt: refreshExpiresAt
+    },
+    options
+  );
+  const [accessToken, refreshToken] = await Promise.all([
+    signJWT({
+      ...authInfo,
+      jti: refreshTokenId,
+      iat: createdAt.valueOf(),
+      exp: accessExpiresAt.valueOf()
+    }),
+    signJWT({
+      ...authInfo,
+      jti: refreshTokenId,
+      iat: createdAt.valueOf(),
+      exp: refreshExpiresAt.valueOf()
+    })
+  ]);
+  return { accessToken, refreshToken };
+}
 
 export {
   extractToken,
@@ -98,6 +140,8 @@ export {
   encryptPassword,
   checkForCorrectPassword,
   signJWT,
+  updateLastLoginAt,
   getAuthUserByEmail,
-  getAuthUserByMobile
+  createAuthUserTokenPair,
+  getAuthUserByUsername
 };
