@@ -4,7 +4,7 @@ import config, { isProduction, isTesting } from '../config';
 const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = config;
 
 async function startDB(): Promise<void> {
-  mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}`, {
+  await mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}`, {
     dbName: isTesting ? 'teppetiTestDB' : DB_NAME,
     user: DB_USER,
     pass: DB_PASSWORD,
@@ -34,4 +34,9 @@ async function stopDB(): Promise<void> {
   console.log('Disconnected from MongoDB');
 }
 
-export { startDB, stopDB, startTransaction };
+async function dropDB(): Promise<void> {
+  await mongoose.connection.db.dropDatabase();
+  console.log('Dropped the DB');
+}
+
+export { startDB, stopDB, dropDB, startTransaction };

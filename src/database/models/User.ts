@@ -1,5 +1,5 @@
 import { Document, model, Schema } from 'mongoose';
-import { Language } from '../../common/enums';
+import { Language, UserType } from '../../common/enums';
 
 interface IRefreshToken {
   id: string;
@@ -14,16 +14,14 @@ interface IPermission {
   trials: { T: boolean; S: boolean; A: boolean };
 }
 
-type IAuthUserType = 'User' | 'Company';
-
 interface IUser extends Document {
   _id: string;
-  type: IAuthUserType;
   isSuperAdmin: boolean;
   permissions: IPermission;
   mobile: string;
   name: string;
   username: string;
+  type: UserType;
   email?: string;
   dob?: Date;
   city?: string;
@@ -41,18 +39,6 @@ interface IUser extends Document {
 const refreshTokenSchema = new Schema(
   {
     id: { type: String, required: true },
-    device: new Schema(
-      {
-        id: { type: String, required: true },
-        token: { type: String, required: true },
-        model: String,
-        manufacturer: String,
-        platform: String,
-        osVersion: String,
-        appVersion: String
-      },
-      { _id: false, id: false }
-    ),
     createdAt: Date,
     expiresAt: Date
   },
@@ -66,7 +52,7 @@ const userSchema = new Schema(
     isSuperAdmin: { type: Boolean, default: false },
     type: {
       type: String,
-      enum: ['T', 'S', 'A', 'SA'],
+      enum: Object.values(UserType),
       required: true
     },
     permissions: {
@@ -102,8 +88,24 @@ const userSchema = new Schema(
   },
   {
     timestamps: true,
-    discriminatorKey: 'type',
-    useNestedStrict: true
+    toJSON: {
+      transform: (doc, ret) => {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.createdAt;
+        delete ret.updatedAt;
+        delete ret.lastLoginAt;
+        delete ret.deletedAt;
+        delete ret.emailVerificationToken;
+        delete ret.emailVerificationTokenExpiry;
+        delete ret.resetPasswordToken;
+        delete ret.resetPasswordTokenExpiry;
+        delete ret.refreshTokens;
+        delete ret.password;
+        delete ret.lock;
+        delete ret.__v;
+      }
+    }
   }
 );
 
@@ -115,4 +117,4 @@ userSchema.index({
 // tslint:disable-next-line: variable-name
 const User = model<IUser>('User', userSchema);
 
-export { User, IUser, IAuthUserType, IRefreshToken, IPermission };
+export { User, IUser, IRefreshToken, IPermission };

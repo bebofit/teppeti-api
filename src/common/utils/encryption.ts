@@ -1,17 +1,19 @@
-import bcrypt from 'bcrypt';
+import config from '../../config';
+import cryptojs from 'crypto-js';
 import nanoid from 'nanoid/async';
+const { CRYPTO_SECRET } = config;
 
-const hashPassword = (password: string): Promise<string> =>
-  bcrypt.hash(password, 10);
-
-const hashPasswordSync = (password: string): string =>
-  bcrypt.hashSync(password, 10);
+const hashPassword = (password: string): string =>
+  cryptojs.AES.encrypt(password, CRYPTO_SECRET).toString();
 
 const comparePasswordToHash = (
   candidatePassword: string,
   hash: string
-): Promise<boolean> => bcrypt.compare(candidatePassword, hash);
-
+): boolean => {
+  const bytes = cryptojs.AES.decrypt(hash, CRYPTO_SECRET);
+  const exisitngPassword = bytes.toString(cryptojs.enc.Utf8);
+  return candidatePassword === exisitngPassword;
+};
 const genToken = (length?: number): Promise<string> => nanoid(length);
 
-export { hashPassword, hashPasswordSync, comparePasswordToHash, genToken };
+export { hashPassword, comparePasswordToHash, genToken };

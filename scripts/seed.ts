@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { startDB, stopDB } from '../src/database';
+import { startDB, stopDB, dropDB } from '../src/database';
 import authRepository from '../src/api/auth/repository';
 import { hashPassword } from '../src/common/utils';
 
@@ -18,7 +18,7 @@ async function seedSuperAdmin(): Promise<void> {
       trials: { T: true, S: true, A: true }
     },
     username: 'abomervat',
-    password: await hashPassword('123123123'),
+    password: hashPassword('123123123'),
     mobile: '12313123123213'
   };
   await authRepository.create(body);
@@ -36,7 +36,7 @@ async function seedArkan(): Promise<void> {
       trials: { T: false, S: false, A: true }
     },
     username: 'mervat',
-    password: await hashPassword('123123123'),
+    password: hashPassword('123123123'),
     mobile: '12313212323213'
   };
   await authRepository.create(body1);
@@ -51,7 +51,7 @@ async function seedArkan(): Promise<void> {
       trials: { T: false, S: false, A: true }
     },
     username: 'arkan',
-    password: await hashPassword('123123123'),
+    password: hashPassword('123123123'),
     mobile: '12131312323213'
   };
   await authRepository.create(body2);
@@ -69,7 +69,7 @@ async function seedTagamo3(): Promise<void> {
       trials: { T: true, S: false, A: false }
     },
     username: 'nelly',
-    password: await hashPassword('123123123'),
+    password: hashPassword('123123123'),
     mobile: '1231312232135'
   };
   await authRepository.create(body1);
@@ -84,7 +84,7 @@ async function seedTagamo3(): Promise<void> {
       trials: { T: true, S: false, A: true }
     },
     username: 'downtown',
-    password: await hashPassword('123123123'),
+    password: hashPassword('123123123'),
     mobile: '123134312323213'
   };
   await authRepository.create(body2);
@@ -102,7 +102,7 @@ async function seedSakara(): Promise<void> {
       trials: { T: false, S: true, A: false }
     },
     username: 'sakara',
-    password: await hashPassword('123123123'),
+    password: hashPassword('123123123'),
     mobile: '123131298323213'
   };
   await authRepository.create(body);
@@ -111,6 +111,7 @@ async function seedSakara(): Promise<void> {
 (async function seed(): Promise<void> {
   try {
     await startDB();
+    await dropDB();
     await Promise.all([
       seedSuperAdmin(),
       seedArkan(),

@@ -1,12 +1,7 @@
-import { addDays, addMinutes } from 'date-fns';
+import { addDays } from 'date-fns';
 import jwt, { VerifyErrors } from 'jsonwebtoken';
 // import { AccountType, Role } from '../../common/enums';
-import {
-  IAuthInfo,
-  IDBQueryOptions,
-  IPermissionType,
-  IDBQuery
-} from '../../common/types';
+import { IAuthInfo, IDBQueryOptions, IDBQuery } from '../../common/types';
 import {
   comparePasswordToHash,
   genToken,
@@ -62,7 +57,7 @@ const encryptPassword = hashPassword;
 const checkForCorrectPassword = (
   candidatePassword: string,
   hash: string
-): Promise<boolean> => comparePasswordToHash(candidatePassword, hash);
+): boolean => comparePasswordToHash(candidatePassword, hash);
 
 function signJWT(
   data?: any,
@@ -99,7 +94,10 @@ async function createAuthUserTokenPair(
   options?: IDBQueryOptions
 ): Promise<{ accessToken: string; refreshToken: string }> {
   const authInfo: IAuthInfo = {
-    userId: user.id
+    userId: user.id,
+    isSuperAdmin: user.isSuperAdmin,
+    permissions: user.permissions,
+    type: user.type
   };
   const refreshTokenId = await genToken(16);
   const createdAt = new Date();

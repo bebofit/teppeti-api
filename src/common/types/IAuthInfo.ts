@@ -1,12 +1,10 @@
-import { IAuthUserType } from '../../database/models';
-import { IPermissions } from './IPermissions';
+import { IPermission } from '../../database/models';
+import { UserType } from '../enums';
 
 export interface IAuthInfo {
   userId: string;
-  brokerId?: string;
   jti?: string;
-  accountType?: IAuthUserType;
-  isAdmin?: boolean;
   isSuperAdmin?: boolean;
-  permissions?: IPermissions;
+  permissions?: IPermission;
+  type?: UserType;
 }

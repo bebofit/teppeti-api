@@ -1,6 +1,7 @@
 export interface IConfig {
   FRONTEND_URL: string;
   JWT_SECRET: string;
+  CRYPTO_SECRET: string;
   DB_HOST: string;
   DB_PORT: number;
   DB_NAME: string;
