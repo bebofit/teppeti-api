@@ -22,19 +22,16 @@ const ADD_CARPET = joi.object({
   branch: joi
     .string()
     .trim()
-    .uppercase()
     .valid(...Object.values(Branch))
     .required(),
   supplier: joi
     .string()
     .trim()
-    .uppercase()
     .valid(...Object.values(CarpetSupplier))
     .required(),
   type: joi
     .string()
     .trim()
-    .uppercase()
     .valid(...Object.values(CarpetType))
     .required(),
   material: joi
