@@ -2,7 +2,6 @@ import {
   IAuthInfo,
   IDBQueryOptions,
   IPaginatedData,
-  IPermissionType,
   IDBQuery
 } from '../../common/types';
 import { IUser } from '../../database/models';
@@ -27,15 +26,8 @@ const softDeleteUser = (
   options?: IDBQueryOptions
 ): Promise<boolean> => repository.deleteById(id, options);
 
-function isAuthorized(
-  authInfo: IAuthInfo,
-  permission: IPermissionType,
-  user?: Partial<IUser>
-): boolean {
+function isAuthorized(authInfo: IAuthInfo, user?: Partial<IUser>): boolean {
   if (authInfo.isSuperAdmin) {
-    return true;
-  }
-  if (authInfo.isAdmin && authInfo.permissions.users[permission]) {
     return true;
   }
   if (user?.id === authInfo.userId) {
