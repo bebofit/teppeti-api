@@ -29,10 +29,7 @@ async function getAllCarepts(req: IRequest, res: Response): Promise<any> {
 
 async function getCarpetsByBranch(req: IRequest, res: Response): Promise<any> {
   const paginationOptions = extractPaginationOptions(req.query);
-  const { branch } = validateBody(
-    req.body,
-    carpetValidations.GET_CARPETS_BY_BRANCH
-  );
+  const branch = req.query.branch;
   const carpets = await carpetsService.getCarpetsByBranch(
     branch,
     paginationOptions

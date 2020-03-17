@@ -6,15 +6,6 @@ import {
   Branch
 } from '../../common/enums';
 
-const GET_CARPETS_BY_BRANCH = joi.object({
-  branch: joi
-    .string()
-    .trim()
-    .uppercase()
-    .valid(...Object.values(Branch))
-    .required()
-});
-
 const ADD_CARPET = joi.object({
   size: joi.number().required(),
   pricePerSquareMeter: joi.number().required(),
@@ -112,4 +103,4 @@ const UPDATE_CARPET = joi.object({
     })
 });
 
-export { ADD_CARPET, GET_CARPETS_BY_BRANCH, UPDATE_CARPET };
+export { ADD_CARPET, UPDATE_CARPET };
