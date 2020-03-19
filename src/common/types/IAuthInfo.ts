@@ -6,5 +6,5 @@ export interface IAuthInfo {
   jti?: string;
   isSuperAdmin?: boolean;
   permissions?: IPermission;
-  type?: UserType;
+  branch?: UserType;
 }

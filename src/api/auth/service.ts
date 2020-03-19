@@ -97,7 +97,7 @@ async function createAuthUserTokenPair(
     userId: user.id,
     isSuperAdmin: user.isSuperAdmin,
     permissions: user.permissions,
-    type: user.type
+    branch: user.branch
   };
   const refreshTokenId = await genToken(16);
   const createdAt = new Date();
