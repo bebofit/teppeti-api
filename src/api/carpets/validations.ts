@@ -59,11 +59,6 @@ const UPDATE_CARPET = joi.object({
   size: joi.number(),
   pricePerSquareMeter: joi.number(),
   imageUrl: joi.string().trim(),
-  branch: joi
-    .string()
-    .trim()
-    .uppercase()
-    .valid(...Object.values(Branch)),
   supplier: joi
     .string()
     .trim()

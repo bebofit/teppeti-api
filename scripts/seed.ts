@@ -10,7 +10,7 @@ async function seedSuperAdmin(): Promise<void> {
     name: 'Abo Mervat',
     email: 'superadmin@teppeti.me',
     isSuperAdmin: true,
-    type: 'SA',
+    branch: 'SA',
     permissions: {
       sales: { T: true, S: true, A: true },
       products: { T: true, S: true, A: true },
@@ -28,7 +28,7 @@ async function seedArkan(): Promise<void> {
   const body1 = {
     name: 'Mervat',
     email: 'mervat@teppeti.me',
-    type: 'A',
+    branch: 'A',
     permissions: {
       sales: { T: false, S: false, A: true },
       products: { T: false, S: false, A: true },
@@ -43,7 +43,7 @@ async function seedArkan(): Promise<void> {
   const body2 = {
     name: 'Arkan Branch',
     email: 'arkan@teppeti.me',
-    type: 'A',
+    branch: 'A',
     permissions: {
       sales: { T: false, S: false, A: false },
       products: { T: false, S: false, A: true },
@@ -61,7 +61,7 @@ async function seedTagamo3(): Promise<void> {
   const body1 = {
     name: 'Nelly',
     email: 'nelly@teppeti.me',
-    type: 'T',
+    branch: 'T',
     permissions: {
       sales: { T: true, S: false, A: false },
       products: { T: true, S: false, A: false },
@@ -76,7 +76,7 @@ async function seedTagamo3(): Promise<void> {
   const body2 = {
     name: 'Downtown Tagamo3 Branch',
     email: 'downtown@teppeti.me',
-    type: 'T',
+    branch: 'T',
     permissions: {
       sales: { T: false, S: false, A: false },
       products: { T: true, S: false, A: true },
@@ -94,7 +94,7 @@ async function seedSakara(): Promise<void> {
   const body = {
     name: 'Sakara Branch',
     email: 'sakara@teppeti.me',
-    type: 'S',
+    branch: 'S',
     permissions: {
       sales: { T: false, S: false, A: false },
       products: { T: false, S: true, A: false },

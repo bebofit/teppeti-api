@@ -21,7 +21,7 @@ interface IUser extends Document {
   mobile: string;
   name: string;
   username: string;
-  type: UserType;
+  branch: UserType;
   email?: string;
   dob?: Date;
   city?: string;
@@ -50,7 +50,7 @@ const userSchema = new Schema(
     name: String,
     email: String,
     isSuperAdmin: { type: Boolean, default: false },
-    type: {
+    branch: {
       type: String,
       enum: Object.values(UserType),
       required: true
