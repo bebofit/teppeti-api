@@ -25,6 +25,8 @@ type ICarpetMaterial =
 
 type ICarpetType = 'Classic' | 'Contemporary' | 'Modern' | 'Handloom';
 
+type IBranch = 'T' | 'S' | 'A';
+
 interface ICarpet extends Document {
   id: string;
   code: string;
@@ -33,6 +35,7 @@ interface ICarpet extends Document {
   supplier: ICarpetSupplier;
   material: ICarpetMaterial;
   type: ICarpetType;
+  branch: IBranch;
   price: number;
   pricePerSquareMeter: number;
 }

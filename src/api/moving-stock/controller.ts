@@ -1,0 +1,132 @@
+import { Response } from 'express';
+import { IRequest } from '../../common/types';
+import * as movingStockValidations from './validations';
+import * as movingStocksService from './service';
+import {
+  validateBody,
+  extractPaginationOptions,
+  validateDBId
+} from '../../common/utils';
+import {
+  INTERNAL_SERVER_ERROR,
+  CREATED,
+  OK,
+  NOT_FOUND,
+  NO_CONTENT
+} from 'http-status';
+import { MovingStockStatus } from '../../common/enums';
+import { IMovingStock } from '../../database/models';
+
+async function getMovingStocksBySender(
+  req: IRequest,
+  res: Response
+): Promise<any> {
+  const paginationOptions = extractPaginationOptions(req.query);
+  const sender = req.query.sender;
+  const movingStocks = await movingStocksService.getMovingStocksBySender(
+    sender,
+    paginationOptions
+  );
+  res.status(OK).json({
+    data: {
+      sent: movingStocks.filter(
+        (m: IMovingStock) => m.status === MovingStockStatus.Sent
+      ),
+      received: movingStocks.filter(
+        (m: IMovingStock) => m.status === MovingStockStatus.Received
+      )
+    }
+  });
+}
+
+async function getMovingStocksByReceiver(
+  req: IRequest,
+  res: Response
+): Promise<any> {
+  const paginationOptions = extractPaginationOptions(req.query);
+  const receiver = req.query.receiver;
+  const movingStocks = await movingStocksService.getMovingStocksByReceiver(
+    receiver,
+    paginationOptions
+  );
+  res.status(OK).json({
+    data: {
+      sent: movingStocks.filter(
+        (m: IMovingStock) => m.status === MovingStockStatus.Sent
+      ),
+      received: movingStocks.filter(
+        (m: IMovingStock) => m.status === MovingStockStatus.Received
+      )
+    }
+  });
+}
+
+async function getMovingStockById(req: IRequest, res: Response): Promise<any> {
+  const movingStockId = req.params.movingStockId;
+  validateDBId(req.params.movingStockId);
+  const movingStock = await movingStocksService.getMovingStockById(
+    movingStockId
+  );
+  if (!movingStock) {
+    throw {
+      statusCode: NOT_FOUND,
+      errorCode: 'Cannot find Moving Stock'
+    };
+  }
+  res.status(OK).json({
+    data: movingStock
+  });
+}
+
+async function createMovingStock(req: IRequest, res: Response): Promise<any> {
+  const body = validateBody(req.body, movingStockValidations.CREATE);
+  body.code = Math.floor(Math.random() * 10000);
+  const movingStock = await movingStocksService.createMovingStock(body);
+  if (!movingStock) {
+    throw {
+      statusCode: INTERNAL_SERVER_ERROR,
+      errorCode: 'Cannot create Moving Stock'
+    };
+  }
+  res.status(CREATED).json({
+    data: movingStock
+  });
+}
+
+async function acceptMovingStock(req: IRequest, res: Response): Promise<any> {
+  const movingStockId = req.params.movingStockId;
+  validateDBId(req.params.movingStockId);
+  const body = validateBody(req.body, movingStockValidations.MOVE_STOCK);
+  const isUpdated = await movingStocksService.acceptMovingStock(
+    movingStockId,
+    body
+  );
+
+  if (!isUpdated) {
+    throw { statusCode: INTERNAL_SERVER_ERROR };
+  }
+}
+
+async function softDeleteMovingStock(
+  req: IRequest,
+  res: Response
+): Promise<any> {
+  const movingStockId = req.params.movingStockId;
+  validateDBId(req.params.movingStockId);
+  const isDeleted = await movingStocksService.softDeleteMovingStock(
+    movingStockId
+  );
+  if (!isDeleted) {
+    throw { statusCode: INTERNAL_SERVER_ERROR };
+  }
+  res.status(NO_CONTENT).send();
+}
+
+export {
+  createMovingStock,
+  getMovingStocksBySender,
+  getMovingStocksByReceiver,
+  getMovingStockById,
+  acceptMovingStock,
+  softDeleteMovingStock
+};
