@@ -29,7 +29,8 @@ async function getAllCarepts(req: IRequest, res: Response): Promise<any> {
 
 async function getCarpetsByBranch(req: IRequest, res: Response): Promise<any> {
   const paginationOptions = extractPaginationOptions(req.query);
-  const branch = req.query.branch;
+  const { isSuperAdmin, branch: authBranch } = req.authInfo;
+  const branch = isSuperAdmin ? req.query.branch : authBranch;
   const carpets = await carpetsService.getCarpetsByBranch(
     branch,
     paginationOptions

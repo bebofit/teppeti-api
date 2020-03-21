@@ -1,7 +1,7 @@
 import joi from '../../lib/joi';
 import { Branch } from '../../common/enums';
 
-const CREATE = joi.object({
+const CREATE_SUPER_ADMIN = joi.object({
   sentCarpets: joi
     .array()
     .items(joi.objectId())
@@ -18,7 +18,19 @@ const CREATE = joi.object({
     .required()
 });
 
-const MOVE_STOCK = joi.object({
+const CREATE = joi.object({
+  sentCarpets: joi
+    .array()
+    .items(joi.objectId())
+    .required(),
+  receiver: joi
+    .string()
+    .trim()
+    .valid(...Object.values(Branch))
+    .required()
+});
+
+const MOVE_STOCK_SUPER_ADMIN = joi.object({
   receivedCarpets: joi
     .array()
     .items(joi.objectId())
@@ -29,4 +41,11 @@ const MOVE_STOCK = joi.object({
     .valid(...Object.values(Branch))
     .required()
 });
-export { CREATE, MOVE_STOCK };
+
+const MOVE_STOCK = joi.object({
+  receivedCarpets: joi
+    .array()
+    .items(joi.objectId())
+    .required()
+});
+export { CREATE, CREATE_SUPER_ADMIN, MOVE_STOCK, MOVE_STOCK_SUPER_ADMIN };

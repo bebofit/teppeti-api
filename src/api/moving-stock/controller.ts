@@ -79,8 +79,14 @@ async function getMovingStockById(req: IRequest, res: Response): Promise<any> {
 }
 
 async function createMovingStock(req: IRequest, res: Response): Promise<any> {
-  const body = validateBody(req.body, movingStockValidations.CREATE);
-  body.code = Math.floor(Math.random() * 10000);
+  let body: any = {};
+  const { isSuperAdmin, branch } = req.authInfo;
+  if (!isSuperAdmin) {
+    body = validateBody(req.body, movingStockValidations.CREATE);
+    body.sender = branch;
+  } else {
+    body = validateBody(req.body, movingStockValidations.CREATE_SUPER_ADMIN);
+  }
   const movingStock = await movingStocksService.createMovingStock(body);
   if (!movingStock) {
     throw {
@@ -96,7 +102,17 @@ async function createMovingStock(req: IRequest, res: Response): Promise<any> {
 async function acceptMovingStock(req: IRequest, res: Response): Promise<any> {
   const movingStockId = req.params.movingStockId;
   validateDBId(req.params.movingStockId);
-  const body = validateBody(req.body, movingStockValidations.MOVE_STOCK);
+  const { isSuperAdmin, branch } = req.authInfo;
+  let body: any = {};
+  if (!isSuperAdmin) {
+    body = validateBody(req.body, movingStockValidations.MOVE_STOCK);
+    body.receiver = branch;
+  } else {
+    body = validateBody(
+      req.body,
+      movingStockValidations.MOVE_STOCK_SUPER_ADMIN
+    );
+  }
   const isUpdated = await movingStocksService.acceptMovingStock(
     movingStockId,
     body
