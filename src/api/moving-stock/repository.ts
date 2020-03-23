@@ -13,14 +13,20 @@ class MovingStockRepository extends BaseDBRepository<IMovingStock> {
     sender: Branch,
     options?: IDBQueryOptions
   ): IDBQuery<IMovingStock> {
-    return super.find({ sender }, options);
+    return super
+      .find({ sender }, options)
+      .populate('receivedCarpets', 'id code')
+      .populate('sentCarpets', 'id code');
   }
 
   getMovingStocksByReceiver(
     receiver: Branch,
     options?: IDBQueryOptions
   ): IDBQuery<IMovingStock> {
-    return super.find({ receiver }, options);
+    return super
+      .find({ receiver }, options)
+      .populate('receivedCarpets', 'id code')
+      .populate('sentCarpets', 'id code');
   }
 
   acceptMovingStock(

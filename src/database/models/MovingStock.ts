@@ -19,15 +19,21 @@ const movingStockSchema = new Schema(
   {
     sentCarpets: [
       {
-        type: String,
-        ref: 'Carpet',
-        required: true
+        id: {
+          type: String,
+          ref: 'Carpet',
+          required: true
+        },
+        code: String
       }
     ],
     receivedCarpets: [
       {
-        type: String,
-        ref: 'Carpet'
+        id: {
+          type: String,
+          ref: 'Carpet'
+        },
+        code: String
       }
     ],
     status: {
