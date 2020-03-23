@@ -29,14 +29,7 @@ async function getMovingStocksBySender(
     paginationOptions
   );
   res.status(OK).json({
-    data: {
-      pending: movingStocks.filter(
-        (m: IMovingStock) => m.status === MovingStockStatus.Sent
-      ),
-      accepted: movingStocks.filter(
-        (m: IMovingStock) => m.status === MovingStockStatus.Received
-      )
-    }
+    data: movingStocks
   });
 }
 
@@ -52,14 +45,7 @@ async function getMovingStocksByReceiver(
     paginationOptions
   );
   res.status(OK).json({
-    data: {
-      pending: movingStocks.filter(
-        (m: IMovingStock) => m.status === MovingStockStatus.Sent
-      ),
-      accepted: movingStocks.filter(
-        (m: IMovingStock) => m.status === MovingStockStatus.Received
-      )
-    }
+    data: movingStocks
   });
 }
 
