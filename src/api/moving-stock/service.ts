@@ -20,6 +20,11 @@ const getMovingStockById = (
   options?: IDBQueryOptions
 ): IDBQuery<IMovingStock> => repository.findById(id, options);
 
+const getMovingStockByIdAndLock = (
+  id: string,
+  options?: IDBQueryOptions
+): IDBQuery<IMovingStock> => repository.findByIdAndLock(id, options);
+
 const createMovingStock = (
   body: any,
   options?: IDBQueryOptions
@@ -38,6 +43,7 @@ const softDeleteMovingStock = (
 
 export {
   getMovingStockById,
+  getMovingStockByIdAndLock,
   getMovingStocksBySender,
   getMovingStocksByReceiver,
   createMovingStock,

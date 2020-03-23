@@ -25,6 +25,12 @@ const updateCarpet = (
   options?: IDBQueryOptions
 ): IDBQuery<ICarpet> => repository.findByIdAndUpdate(id, body, options);
 
+const moveCarpetToBranch = (
+  id: string,
+  branch: string,
+  options?: IDBQueryOptions
+): Promise<boolean> => repository.moveCarpetToBranch(id, branch, options);
+
 const softDeleteCarpet = (
   id: string,
   options?: IDBQueryOptions
@@ -33,6 +39,7 @@ const softDeleteCarpet = (
 export {
   getCarpets,
   getCarpetsByBranch,
+  moveCarpetToBranch,
   getCarpetById,
   createCarpet,
   updateCarpet,

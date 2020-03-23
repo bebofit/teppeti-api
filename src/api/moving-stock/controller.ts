@@ -1,21 +1,21 @@
 import { Response } from 'express';
-import { IRequest } from '../../common/types';
-import * as movingStockValidations from './validations';
-import * as movingStocksService from './service';
 import {
-  validateBody,
+  CREATED,
+  INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
+  NO_CONTENT,
+  OK
+} from 'http-status';
+import { IRequest } from '../../common/types';
+import {
   extractPaginationOptions,
+  validateBody,
   validateDBId
 } from '../../common/utils';
-import {
-  INTERNAL_SERVER_ERROR,
-  CREATED,
-  OK,
-  NOT_FOUND,
-  NO_CONTENT
-} from 'http-status';
-import { MovingStockStatus } from '../../common/enums';
-import { IMovingStock } from '../../database/models';
+import { startTransaction } from '../../database';
+import * as movingStocksService from './service';
+import * as carpetsService from '../carpets/service';
+import * as movingStockValidations from './validations';
 
 async function getMovingStocksBySender(
   req: IRequest,
@@ -101,14 +101,26 @@ async function acceptMovingStock(req: IRequest, res: Response): Promise<any> {
       movingStockValidations.MOVE_STOCK_SUPER_ADMIN
     );
   }
-  const isUpdated = await movingStocksService.acceptMovingStock(
-    movingStockId,
-    body
-  );
-
-  if (!isUpdated) {
-    throw { statusCode: INTERNAL_SERVER_ERROR };
-  }
+  await startTransaction(async trx => {
+    await movingStocksService.getMovingStockByIdAndLock(movingStockId, { trx });
+    const isUpdated = await movingStocksService.acceptMovingStock(
+      movingStockId,
+      body,
+      { trx }
+    );
+    if (!isUpdated) {
+      throw { statusCode: INTERNAL_SERVER_ERROR };
+    }
+    const updates = await Promise.all(
+      body.receivedCarpets.map((id: string) =>
+        carpetsService.moveCarpetToBranch(id, branch, { trx })
+      )
+    );
+    if (updates.some(u => !u)) {
+      throw { statusCode: INTERNAL_SERVER_ERROR };
+    }
+  });
+  res.status(NO_CONTENT).send();
 }
 
 async function softDeleteMovingStock(

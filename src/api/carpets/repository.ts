@@ -15,6 +15,14 @@ class CarpetRepository extends BaseDBRepository<ICarpet> {
   ): IDBQuery<ICarpet> {
     return super.find({ branch }, options);
   }
+
+  moveCarpetToBranch(
+    id: string,
+    branch: string,
+    options?: IDBQueryOptions
+  ): Promise<boolean> {
+    return super.updateById(id, { branch }, options);
+  }
 }
 
 const carpetRepository = new CarpetRepository(Carpet);
