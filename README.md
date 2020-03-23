@@ -1,6 +1,6 @@
 # grok-api
 
-The API for Grok :tada:.
+The API for Teppeti :tada:.
 
 ## Technology
 
