@@ -45,7 +45,7 @@ const carpetSchema = new Schema(
   {
     code: { type: String, required: true },
     width: { type: Number, required: true },
-    height: { type: Number, required: true },
+    length: { type: Number, required: true },
     imageUrl: { type: String, default: '' },
     supplier: {
       type: String,

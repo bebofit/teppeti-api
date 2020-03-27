@@ -8,7 +8,7 @@ import {
 
 const ADD_CARPET = joi.object({
   width: joi.number().required(),
-  height: joi.number().required(),
+  length: joi.number().required(),
   pricePerSquareMeter: joi.number().required(),
   imageUrl: joi.string().trim(),
   branch: joi
@@ -58,7 +58,7 @@ const ADD_CARPET = joi.object({
 
 const UPDATE_CARPET = joi.object({
   width: joi.number(),
-  height: joi.number(),
+  length: joi.number(),
   pricePerSquareMeter: joi.number(),
   finalPricePerSquareMeter: joi.number(),
   imageUrl: joi.string().trim(),
