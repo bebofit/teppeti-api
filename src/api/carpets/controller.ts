@@ -68,6 +68,26 @@ async function addCarpet(req: IRequest, res: Response): Promise<any> {
   });
 }
 
+async function sellCarpet(req: IRequest, res: Response): Promise<any> {
+  const carpetId = req.params.carpetId;
+  validateDBId(req.params.carpetId);
+  const { finalPricePerSquareMeter } = validateBody(
+    req.body,
+    carpetValidations.SELL_CARPET
+  );
+  const isUpdated = await carpetsService.sellCarpet(
+    carpetId,
+    finalPricePerSquareMeter
+  );
+  if (!isUpdated) {
+    throw {
+      statusCode: NOT_FOUND,
+      errorCode: 'Cannot find Carpet'
+    };
+  }
+  res.status(NO_CONTENT).send();
+}
+
 async function updateCarpet(req: IRequest, res: Response): Promise<any> {
   const carpetId = req.params.carpetId;
   validateDBId(req.params.carpetId);
@@ -96,6 +116,7 @@ async function softDeleteCarpet(req: IRequest, res: Response): Promise<any> {
 
 export {
   addCarpet,
+  sellCarpet,
   getCarpetsByBranch,
   getAllCarepts,
   getCarpetById,

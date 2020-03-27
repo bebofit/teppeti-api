@@ -19,6 +19,13 @@ const getCarpetById = (
 const createCarpet = (body: any, options?: IDBQueryOptions): Promise<ICarpet> =>
   repository.create(body, options);
 
+const sellCarpet = (
+  id: string,
+  finalPricePerSquareMeter: string,
+  options?: IDBQueryOptions
+): Promise<boolean> =>
+  repository.sellCarpet(id, finalPricePerSquareMeter, options);
+
 const updateCarpet = (
   id: string,
   body: any,
@@ -42,6 +49,7 @@ export {
   moveCarpetToBranch,
   getCarpetById,
   createCarpet,
+  sellCarpet,
   updateCarpet,
   softDeleteCarpet
 };

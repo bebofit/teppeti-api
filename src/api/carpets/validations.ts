@@ -60,6 +60,7 @@ const UPDATE_CARPET = joi.object({
   width: joi.number(),
   height: joi.number(),
   pricePerSquareMeter: joi.number(),
+  finalPricePerSquareMeter: joi.number(),
   imageUrl: joi.string().trim(),
   supplier: joi
     .string()
@@ -100,4 +101,8 @@ const UPDATE_CARPET = joi.object({
     })
 });
 
-export { ADD_CARPET, UPDATE_CARPET };
+const SELL_CARPET = joi.object({
+  finalPricePerSquareMeter: joi.number().required()
+});
+
+export { ADD_CARPET, UPDATE_CARPET, SELL_CARPET };

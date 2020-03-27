@@ -16,6 +16,14 @@ class CarpetRepository extends BaseDBRepository<ICarpet> {
     return super.find({ branch }, options);
   }
 
+  sellCarpet(
+    id: string,
+    finalPricePerSquareMeter: string,
+    options?: IDBQueryOptions
+  ): Promise<boolean> {
+    return super.updateById(id, { finalPricePerSquareMeter, isSold: true });
+  }
+
   moveCarpetToBranch(
     id: string,
     branch: string,

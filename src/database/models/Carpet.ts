@@ -61,6 +61,7 @@ const carpetSchema = new Schema(
     branch: { type: String, required: true, enum: Object.values(Branch) },
     pricePerSquareMeter: { type: Number, required: true },
     finalPricePerSquareMeter: Number,
+    isSold: { type: Boolean, default: false },
     price: Number,
     deletedAt: Date,
     lock: String
