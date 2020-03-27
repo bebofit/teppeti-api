@@ -7,8 +7,10 @@ import {
 } from '../../common/enums';
 
 const ADD_CARPET = joi.object({
-  size: joi.number().required(),
+  width: joi.number().required(),
+  height: joi.number().required(),
   pricePerSquareMeter: joi.number().required(),
+  finalPricePerSquareMeter: joi.number().required(),
   imageUrl: joi.string().trim(),
   branch: joi
     .string()
@@ -56,8 +58,10 @@ const ADD_CARPET = joi.object({
 });
 
 const UPDATE_CARPET = joi.object({
-  size: joi.number(),
+  width: joi.number(),
+  height: joi.number(),
   pricePerSquareMeter: joi.number(),
+  finalPricePerSquareMeter: joi.number(),
   imageUrl: joi.string().trim(),
   supplier: joi
     .string()

@@ -31,7 +31,8 @@ interface ICarpet extends Document {
   id: string;
   code: string;
   imageUrl: string;
-  size: number;
+  width: number;
+  height: number;
   supplier: ICarpetSupplier;
   material: ICarpetMaterial;
   type: ICarpetType;
@@ -43,7 +44,8 @@ interface ICarpet extends Document {
 const carpetSchema = new Schema(
   {
     code: { type: String, required: true },
-    size: { type: Number, required: true },
+    width: { type: Number, required: true },
+    height: { type: Number, required: true },
     imageUrl: { type: String, default: '' },
     supplier: {
       type: String,
@@ -58,6 +60,7 @@ const carpetSchema = new Schema(
     type: { type: String, required: true, enum: Object.values(CarpetType) },
     branch: { type: String, required: true, enum: Object.values(Branch) },
     pricePerSquareMeter: { type: Number, required: true },
+    finalPricePerSquareMeter: Number,
     price: Number,
     deletedAt: Date,
     lock: String
