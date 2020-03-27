@@ -9,6 +9,7 @@ router.get('/all', isSuperAdmin, errorHandler(controller.getAllCarepts));
 router.get('/', errorHandler(controller.getCarpetsByBranch));
 router.get('/:carpetId', errorHandler(controller.getCarpetById));
 router.post('/', errorHandler(controller.addCarpet));
+router.post('/sell/:carpetId', errorHandler(controller.sellCarpet));
 router.patch('/:carpetId', errorHandler(controller.updateCarpet));
 router.delete('/:carpetId', errorHandler(controller.softDeleteCarpet));
 
