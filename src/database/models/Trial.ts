@@ -15,7 +15,7 @@ interface ITrial extends Document {
     name: string;
     address: string;
     mobile: string;
-  }
+  };
   status: IStatus;
   sender: IBranch;
 }
@@ -38,7 +38,7 @@ const trialSchema = new Schema({
     type: Date,
     required: true
   },
-  contact: {
+  client: {
     type: new Schema({
       name: { type: String, required: true },
       address: { type: String, required: true },

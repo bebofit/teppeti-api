@@ -45,7 +45,7 @@ const CREATE = joi.object({
     .date()
     .min('now')
     .required(),
-  contact: joi.object({
+  client: joi.object({
     name: joi
       .string()
       .trim()
@@ -64,7 +64,7 @@ const CREATE = joi.object({
 const UPDATE = joi.object({
   sentCarpets: joi.array().items(joi.objectId()),
   deliveryDate: joi.date().min('now'),
-  contact: joi.object({
+  client: joi.object({
     name: joi.string().trim(),
     address: joi.string().trim(),
     mobile: joi.string().trim()
