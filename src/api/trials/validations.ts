@@ -1,6 +1,36 @@
 import { Branch } from '../../common/enums';
 import joi from '../../lib/joi';
 
+const CREATE_SUPER_ADMIN = joi.object({
+  sentCarpets: joi
+    .array()
+    .items(joi.objectId())
+    .required(),
+  sender: joi
+    .string()
+    .trim()
+    .valid(...Object.values(Branch))
+    .required(),
+  deliveryDate: joi
+    .date()
+    .min('now')
+    .required(),
+  contact: joi.object({
+    name: joi
+      .string()
+      .trim()
+      .required(),
+    address: joi
+      .string()
+      .trim()
+      .required(),
+    mobile: joi
+      .string()
+      .trim()
+      .required()
+  })
+});
+
 const CREATE = joi.object({
   sentCarpets: joi
     .array()
@@ -63,4 +93,10 @@ const ACCEPT_TRIAL = joi.object({
     .required()
 });
 
-export { CREATE, UPDATE, ACCEPT_TRIAL, ACCEPT_TRIAL_SUPER_ADMIN };
+export {
+  CREATE_SUPER_ADMIN,
+  CREATE,
+  UPDATE,
+  ACCEPT_TRIAL,
+  ACCEPT_TRIAL_SUPER_ADMIN
+};

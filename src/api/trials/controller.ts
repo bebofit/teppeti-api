@@ -41,7 +41,14 @@ async function getTrialById(req: IRequest, res: Response): Promise<any> {
 }
 
 async function createTrail(req: IRequest, res: Response): Promise<any> {
-  const body = validateBody(req.body, trialsValidations.CREATE);
+  let body: any = {};
+  const { isSuperAdmin, branch } = req.authInfo;
+  if (!isSuperAdmin) {
+    body = validateBody(req.body, trialsValidations.CREATE);
+    body.sender = branch;
+  } else {
+    body = validateBody(req.body, trialsValidations.CREATE_SUPER_ADMIN);
+  }
   const trial = await trialsService.createTrial(body);
   res.status(CREATED).json({
     data: trial
