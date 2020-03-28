@@ -21,7 +21,7 @@ import { startTransaction } from '../../database';
 async function getTrials(req: IRequest, res: Response): Promise<any> {
   const paginationOptions = extractPaginationOptions(req.query);
   const { isSuperAdmin, branch } = req.authInfo;
-  const sender = isSuperAdmin ? req.query.branch : branch;
+  const sender = isSuperAdmin ? req.query.sender : branch;
   const trials = await trialsService.getTrials(sender, paginationOptions);
   res.status(OK).json({
     data: trials
