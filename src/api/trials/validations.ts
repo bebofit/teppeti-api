@@ -36,11 +36,6 @@ const CREATE = joi.object({
     .array()
     .items(joi.objectId())
     .required(),
-  sender: joi
-    .string()
-    .trim()
-    .valid(...Object.values(Branch))
-    .required(),
   deliveryDate: joi
     .date()
     .min('now')
