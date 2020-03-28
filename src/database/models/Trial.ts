@@ -1,5 +1,5 @@
 import { Document, model, Schema } from 'mongoose';
-import { Branch, MovingStockStatus } from '../../common/enums';
+import { Branch, TrialStatus } from '../../common/enums';
 import { ICarpet } from './Carpet';
 
 type IBranch = 'T' | 'S' | 'A';
@@ -20,34 +20,56 @@ interface ITrial extends Document {
   sender: IBranch;
 }
 
-const trialSchema = new Schema({
-  sentCarpets: [
-    {
-      type: String,
-      ref: 'Carpet',
+const trialSchema = new Schema(
+  {
+    sentCarpets: [
+      {
+        type: String,
+        ref: 'Carpet',
+        required: true
+      }
+    ],
+    soldCarpets: [
+      {
+        type: String,
+        ref: 'Carpet'
+      }
+    ],
+    deliveryDate: {
+      type: Date,
       required: true
-    }
-  ],
-  soldCarpets: [
-    {
-      type: String,
-      ref: 'Carpet'
-    }
-  ],
-  deliveryDate: {
-    type: Date,
-    required: true
+    },
+    status: {
+      type: Number,
+      enum: Object.values(TrialStatus),
+      default: TrialStatus.Sent
+    },
+    client: {
+      type: new Schema(
+        {
+          name: { type: String, required: true },
+          address: { type: String, required: true },
+          mobile: { type: String, required: true }
+        },
+        { _id: false, id: false }
+      ),
+      required: true
+    },
+    sender: { type: String, required: true, enum: Object.values(Branch) }
   },
-  client: {
-    type: new Schema({
-      name: { type: String, required: true },
-      address: { type: String, required: true },
-      mobile: { type: String, required: true }
-    }),
-    required: true
-  },
-  sender: { type: String, required: true, enum: Object.values(Branch) }
-});
+  {
+    timestamps: true,
+    toJSON: {
+      transform: (doc, ret) => {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.deletedAt;
+        delete ret.lock;
+        delete ret.__v;
+      }
+    }
+  }
+);
 
 // tslint:disable-next-line: variable-name
 const Trial = model<ITrial>('Trial', trialSchema);
