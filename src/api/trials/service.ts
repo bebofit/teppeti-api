@@ -18,7 +18,13 @@ const getTrialById = (
   options?: IDBQueryOptions
 ): IDBQuery<ITrial> => repository.findById(id, options);
 
-const createTrial = (body: any): Promise<ITrial> => repository.create(body);
+const getTrialByIdAndLock = (
+  id: string,
+  options?: IDBQueryOptions
+): IDBQuery<ITrial> => repository.findByIdAndLock(id, options);
+
+const createTrial = (body: any, options?: IDBQueryOptions): Promise<ITrial> =>
+  repository.create(body, options);
 
 const updateTrial = (id: string, options?: IDBQueryOptions): IDBQuery<ITrial> =>
   repository.findByIdAndUpdate(id, options);
@@ -46,6 +52,7 @@ function isAuthorized(authInfo: IAuthInfo, user?: Partial<ITrial>): boolean {
 
 export {
   getTrialById,
+  getTrialByIdAndLock,
   getTrials,
   createTrial,
   acceptTrial,

@@ -39,6 +39,8 @@ interface ICarpet extends Document {
   branch: IBranch;
   price: number;
   pricePerSquareMeter: number;
+  isLocked: boolean;
+  isSold: boolean;
 }
 
 const carpetSchema = new Schema(
@@ -62,6 +64,7 @@ const carpetSchema = new Schema(
     pricePerSquareMeter: { type: Number, required: true },
     finalPricePerSquareMeter: Number,
     isSold: { type: Boolean, default: false },
+    isLocked: { type: Boolean, default: false },
     price: Number,
     deletedAt: Date,
     lock: String
@@ -75,6 +78,7 @@ const carpetSchema = new Schema(
         delete ret.deletedAt;
         delete ret.lock;
         delete ret.__v;
+        delete ret.isLocked;
       }
     }
   }

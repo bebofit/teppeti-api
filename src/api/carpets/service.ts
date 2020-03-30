@@ -4,7 +4,7 @@ import { IDBQueryOptions, IDBQuery } from '../../common/types';
 import { Branch } from '../../common/enums';
 
 const getCarpets = (options?: IDBQueryOptions): IDBQuery<ICarpet> =>
-  repository.findAll(options);
+  repository.getCarpets(options);
 
 const getCarpetsByBranch = (
   branch: Branch,
@@ -16,6 +16,9 @@ const getCarpetById = (
   options?: IDBQueryOptions
 ): IDBQuery<ICarpet> => repository.findById(id, options);
 
+const getSoldCarpets = (options?: IDBQueryOptions): IDBQuery<ICarpet> =>
+  repository.getSoldCarpets(options);
+
 const createCarpet = (body: any, options?: IDBQueryOptions): Promise<ICarpet> =>
   repository.create(body, options);
 
@@ -25,6 +28,16 @@ const sellCarpet = (
   options?: IDBQueryOptions
 ): Promise<boolean> =>
   repository.sellCarpet(id, finalPricePerSquareMeter, options);
+
+const lockCarpets = (
+  carpetsIds: string[],
+  options?: IDBQueryOptions
+): Promise<boolean> => repository.lockCarpets(carpetsIds, options);
+
+const unLockCarpets = (
+  carpetsIds: string[],
+  options?: IDBQueryOptions
+): Promise<boolean> => repository.unLockCarpets(carpetsIds, options);
 
 const updateCarpet = (
   id: string,
@@ -45,11 +58,14 @@ const softDeleteCarpet = (
 
 export {
   getCarpets,
+  getSoldCarpets,
   getCarpetsByBranch,
   moveCarpetToBranch,
   getCarpetById,
   createCarpet,
   sellCarpet,
+  lockCarpets,
+  unLockCarpets,
   updateCarpet,
   softDeleteCarpet
 };

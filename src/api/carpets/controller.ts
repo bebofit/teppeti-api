@@ -27,6 +27,12 @@ async function getAllCarepts(req: IRequest, res: Response): Promise<any> {
   res.status(OK).json({ data });
 }
 
+async function getSoldCarepts(req: IRequest, res: Response): Promise<any> {
+  const paginationOptions = extractPaginationOptions(req.query);
+  const carpets = await carpetsService.getSoldCarpets(paginationOptions);
+  res.status(OK).json({ carpets });
+}
+
 async function getCarpetsByBranch(req: IRequest, res: Response): Promise<any> {
   const paginationOptions = extractPaginationOptions(req.query);
   const { isSuperAdmin, branch: authBranch } = req.authInfo;
@@ -119,6 +125,7 @@ export {
   sellCarpet,
   getCarpetsByBranch,
   getAllCarepts,
+  getSoldCarepts,
   getCarpetById,
   updateCarpet,
   softDeleteCarpet

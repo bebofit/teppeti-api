@@ -6,6 +6,7 @@ import * as controller from './controller';
 const router = Router();
 
 router.get('/all', isSuperAdmin, errorHandler(controller.getAllCarepts));
+router.get('/sold', isSuperAdmin, errorHandler(controller.getSoldCarepts));
 router.get('/', errorHandler(controller.getCarpetsByBranch));
 router.get('/:carpetId', errorHandler(controller.getCarpetById));
 router.post('/', errorHandler(controller.addCarpet));

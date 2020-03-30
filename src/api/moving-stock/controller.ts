@@ -68,6 +68,7 @@ async function getMovingStockById(req: IRequest, res: Response): Promise<any> {
 
 async function createMovingStock(req: IRequest, res: Response): Promise<any> {
   let body: any = {};
+  let movingStock: any;
   const { isSuperAdmin, branch } = req.authInfo;
   if (!isSuperAdmin) {
     body = validateBody(req.body, movingStockValidations.CREATE);
@@ -75,13 +76,22 @@ async function createMovingStock(req: IRequest, res: Response): Promise<any> {
   } else {
     body = validateBody(req.body, movingStockValidations.CREATE_SUPER_ADMIN);
   }
-  const movingStock = await movingStocksService.createMovingStock(body);
-  if (!movingStock) {
-    throw {
-      statusCode: INTERNAL_SERVER_ERROR,
-      errorCode: 'Cannot create Moving Stock'
-    };
-  }
+  await startTransaction(async trx => {
+    movingStock = await movingStocksService.createMovingStock(body, { trx });
+    if (!movingStock) {
+      throw {
+        statusCode: INTERNAL_SERVER_ERROR,
+        errorCode: 'Cannot create Moving Stock'
+      };
+    }
+    const isLocked = await carpetsService.lockCarpets(movingStock.sentCarpets, {
+      trx
+    });
+    if (!isLocked) {
+      throw { statusCode: INTERNAL_SERVER_ERROR };
+    }
+  });
+
   res.status(CREATED).json({
     data: movingStock
   });
@@ -102,7 +112,17 @@ async function acceptMovingStock(req: IRequest, res: Response): Promise<any> {
     );
   }
   await startTransaction(async trx => {
-    await movingStocksService.getMovingStockByIdAndLock(movingStockId, { trx });
+    const movingStock = await movingStocksService.getMovingStockByIdAndLock(
+      movingStockId,
+      { trx }
+    );
+    const isLocked = await carpetsService.unLockCarpets(
+      movingStock.sentCarpets,
+      { trx }
+    );
+    if (!isLocked) {
+      throw { statusCode: INTERNAL_SERVER_ERROR };
+    }
     const isUpdated = await movingStocksService.acceptMovingStock(
       movingStockId,
       body,

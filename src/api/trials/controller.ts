@@ -42,6 +42,7 @@ async function getTrialById(req: IRequest, res: Response): Promise<any> {
 
 async function createTrail(req: IRequest, res: Response): Promise<any> {
   let body: any = {};
+  let trial: any;
   const { isSuperAdmin, branch } = req.authInfo;
   if (!isSuperAdmin) {
     body = validateBody(req.body, trialsValidations.CREATE);
@@ -49,7 +50,21 @@ async function createTrail(req: IRequest, res: Response): Promise<any> {
   } else {
     body = validateBody(req.body, trialsValidations.CREATE_SUPER_ADMIN);
   }
-  const trial = await trialsService.createTrial(body);
+  await startTransaction(async trx => {
+    trial = await trialsService.createTrial(body);
+    if (!trial) {
+      throw {
+        statusCode: INTERNAL_SERVER_ERROR,
+        errorCode: 'Cannot create Trial'
+      };
+    }
+    const isLocked = await carpetsService.lockCarpets(trial.sentCarpets, {
+      trx
+    });
+    if (!isLocked) {
+      throw { statusCode: INTERNAL_SERVER_ERROR };
+    }
+  });
   res.status(CREATED).json({
     data: trial
   });
@@ -80,6 +95,13 @@ async function acceptTrial(req: IRequest, res: Response): Promise<any> {
     body = validateBody(req.body, trialsValidations.ACCEPT_TRIAL_SUPER_ADMIN);
   }
   await startTransaction(async trx => {
+    const trial = await trialsService.getTrialByIdAndLock(trialId, { trx });
+    const isLocked = await carpetsService.unLockCarpets(trial.sentCarpets, {
+      trx
+    });
+    if (!isLocked) {
+      throw { statusCode: INTERNAL_SERVER_ERROR };
+    }
     const isUpdated = await trialsService.acceptTrial(trialId, body, { trx });
     if (!isUpdated) {
       throw { statusCode: INTERNAL_SERVER_ERROR };
