@@ -49,13 +49,19 @@ class CarpetRepository extends BaseDBRepository<ICarpet> {
   sellCarpet(
     id: string,
     finalPricePerSquareMeter: string,
+    client: string,
     options?: IDBQueryOptions
   ): Promise<boolean> {
-    return super.updateById(id, {
-      finalPricePerSquareMeter,
-      isSold: true,
-      isLocked: false
-    });
+    return super.updateById(
+      id,
+      {
+        finalPricePerSquareMeter,
+        client,
+        isSold: true,
+        isLocked: false
+      },
+      options
+    );
   }
 
   moveCarpetToBranch(

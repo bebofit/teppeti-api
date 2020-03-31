@@ -77,13 +77,14 @@ async function addCarpet(req: IRequest, res: Response): Promise<any> {
 async function sellCarpet(req: IRequest, res: Response): Promise<any> {
   const carpetId = req.params.carpetId;
   validateDBId(req.params.carpetId);
-  const { finalPricePerSquareMeter } = validateBody(
+  const { finalPricePerSquareMeter, client } = validateBody(
     req.body,
     carpetValidations.SELL_CARPET
   );
   const isUpdated = await carpetsService.sellCarpet(
     carpetId,
-    finalPricePerSquareMeter
+    finalPricePerSquareMeter,
+    client
   );
   if (!isUpdated) {
     throw {

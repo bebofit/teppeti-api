@@ -107,7 +107,8 @@ const UPDATE_CARPET = joi.object({
 });
 
 const SELL_CARPET = joi.object({
-  finalPricePerSquareMeter: joi.number().required()
+  finalPricePerSquareMeter: joi.number().required(),
+  client: joi.objectId().required()
 });
 
 export { ADD_CARPET, UPDATE_CARPET, SELL_CARPET };

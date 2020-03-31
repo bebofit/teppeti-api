@@ -25,9 +25,10 @@ const createCarpet = (body: any, options?: IDBQueryOptions): Promise<ICarpet> =>
 const sellCarpet = (
   id: string,
   finalPricePerSquareMeter: string,
+  client: string,
   options?: IDBQueryOptions
 ): Promise<boolean> =>
-  repository.sellCarpet(id, finalPricePerSquareMeter, options);
+  repository.sellCarpet(id, finalPricePerSquareMeter, client, options);
 
 const lockCarpets = (
   carpetsIds: string[],
