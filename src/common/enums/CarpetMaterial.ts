@@ -3,5 +3,6 @@ export enum CarpetMaterial {
   WoolAndSilk = 'Wool & Silk',
   WoolAndBamboSilk = 'Wool & Bamboo Silk',
   WoolAndSariSilk = 'Wool & Sari Silk',
-  WoolAndViscose = 'Wool & Viscose'
+  WoolAndViscose = 'Wool & Viscose',
+  Silk = 'Silk'
 }

@@ -6,5 +6,6 @@ export enum CarpetSupplier {
   OrientPalace = 'Orient Palace',
   RugOverseas = 'Rug Overseas',
   Global = 'Global',
-  Rajput = 'Rajput'
+  Rajput = 'Rajput',
+  Other = 'Other'
 }

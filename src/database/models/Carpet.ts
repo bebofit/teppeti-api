@@ -5,6 +5,7 @@ import {
   CarpetType,
   Branch
 } from '../../common/enums';
+import { CarpetLocation } from '../../common/enums/CarpetLocation';
 
 type ICarpetSupplier =
   | 'Bhadhoi'
@@ -14,11 +15,13 @@ type ICarpetSupplier =
   | 'Orient Palace'
   | 'Rug Overseas'
   | 'Global'
-  | 'Rajput';
+  | 'Rajput'
+  | 'Other';
 
 type ICarpetMaterial =
   | 'Wool'
   | 'Wool & Silk'
+  | 'Silk'
   | 'Wool & Bamboo Silk'
   | 'Wool & Sari Silk'
   | 'Wool & Viscose';
@@ -62,7 +65,17 @@ const carpetSchema = new Schema(
     type: { type: String, required: true, enum: Object.values(CarpetType) },
     branch: { type: String, required: true, enum: Object.values(Branch) },
     pricePerSquareMeter: { type: Number, required: true },
+    location: {
+      type: String,
+      enum: Object.values(CarpetLocation),
+      default: CarpetLocation.Display
+    },
     finalPricePerSquareMeter: Number,
+    client: {
+      type: Schema.Types.ObjectId,
+      ref: 'Client',
+      default: null
+    },
     isSold: { type: Boolean, default: false },
     isLocked: { type: Boolean, default: false },
     price: Number,
