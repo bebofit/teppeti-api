@@ -46,6 +46,12 @@ const updateCarpet = (
   options?: IDBQueryOptions
 ): IDBQuery<ICarpet> => repository.findByIdAndUpdate(id, body, options);
 
+const updatePhoto = (
+  id: string,
+  body: any,
+  options?: IDBQueryOptions
+): IDBQuery<ICarpet> => repository.updatePhoto(id, body, options);
+
 const moveCarpetToBranch = (
   id: string,
   branch: string,
@@ -68,5 +74,6 @@ export {
   lockCarpets,
   unLockCarpets,
   updateCarpet,
+  updatePhoto,
   softDeleteCarpet
 };

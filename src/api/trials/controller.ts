@@ -108,7 +108,14 @@ async function acceptTrial(req: IRequest, res: Response): Promise<any> {
     }
     const updates = await Promise.all(
       body.soldCarpets.map((c: any) =>
-        carpetsService.sellCarpet(c.id, c.finalPricePerSquareMeter, { trx })
+        carpetsService.sellCarpet(
+          c.id,
+          c.finalPricePerSquareMeter,
+          trial.client,
+          {
+            trx
+          }
+        )
       )
     );
     if (updates.some(u => !u)) {

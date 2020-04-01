@@ -40,20 +40,7 @@ const CREATE = joi.object({
     .date()
     .min('now')
     .required(),
-  client: joi.object({
-    name: joi
-      .string()
-      .trim()
-      .required(),
-    address: joi
-      .string()
-      .trim()
-      .required(),
-    mobile: joi
-      .string()
-      .trim()
-      .required()
-  })
+  client: joi.objectId().required()
 });
 
 const UPDATE = joi.object({

@@ -15,6 +15,7 @@ import {
   NO_CONTENT
 } from 'http-status';
 import { Branch } from '../../common/enums';
+import { storageService } from '../../common/services';
 
 async function getAllCarepts(req: IRequest, res: Response): Promise<any> {
   const paginationOptions = extractPaginationOptions(req.query);
@@ -111,6 +112,31 @@ async function updateCarpet(req: IRequest, res: Response): Promise<any> {
   });
 }
 
+async function updatePhoto(req: IRequest, res: Response): Promise<any> {
+  const carpetId = req.params.carpetId;
+  validateDBId(req.params.carpetId);
+  const file = req.file as Express.MulterS3.File;
+  const photo = {
+    type: file.mimetype,
+    size: file.size,
+    path: file.key,
+    url: file.location
+  };
+  const carpet = await carpetsService.updatePhoto(carpetId, photo, {
+    new: false
+  });
+  if (!carpet) {
+    await storageService.deleteFile(file.key);
+    throw { statusCode: NOT_FOUND };
+  }
+  if (carpet.photo) {
+    await storageService.deleteFile(carpet.photo.path);
+  }
+  res.status(OK).json({
+    data: photo
+  });
+}
+
 async function softDeleteCarpet(req: IRequest, res: Response): Promise<any> {
   const carpetId = req.params.carpetId;
   validateDBId(req.params.carpetId);
@@ -129,5 +155,6 @@ export {
   getSoldCarepts,
   getCarpetById,
   updateCarpet,
+  updatePhoto,
   softDeleteCarpet
 };

@@ -24,14 +24,14 @@ const trialSchema = new Schema(
   {
     sentCarpets: [
       {
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'Carpet',
         required: true
       }
     ],
     soldCarpets: [
       {
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'Carpet'
       }
     ],
@@ -45,14 +45,8 @@ const trialSchema = new Schema(
       default: TrialStatus.Sent
     },
     client: {
-      type: new Schema(
-        {
-          name: { type: String, required: true },
-          address: { type: String, required: true },
-          mobile: { type: String, required: true }
-        },
-        { _id: false, id: false }
-      ),
+      type: Schema.Types.ObjectId,
+      ref: 'Client',
       required: true
     },
     sender: { type: String, required: true, enum: Object.values(Branch) }

@@ -30,10 +30,17 @@ type ICarpetType = 'Classic' | 'Contemporary' | 'Modern' | 'Handloom';
 
 type IBranch = 'T' | 'S' | 'A';
 
+interface IFileUpload extends Document {
+  type: string;
+  size: number;
+  path: string;
+  url: string;
+}
+
 interface ICarpet extends Document {
   id: string;
   code: string;
-  imageUrl: string;
+  photo?: IFileUpload;
   width: number;
   height: number;
   supplier: ICarpetSupplier;
@@ -46,12 +53,21 @@ interface ICarpet extends Document {
   isSold: boolean;
 }
 
+const fileUploadSchema = new Schema(
+  {
+    type: { type: String, required: true },
+    size: { type: Number, required: true },
+    path: { type: String, required: true },
+    url: { type: String, required: true }
+  },
+  { _id: false, id: false }
+);
+
 const carpetSchema = new Schema(
   {
     code: { type: String, required: true },
     width: { type: Number, required: true },
     length: { type: Number, required: true },
-    imageUrl: { type: String, default: '' },
     supplier: {
       type: String,
       required: true,
@@ -76,6 +92,7 @@ const carpetSchema = new Schema(
       ref: 'Client',
       default: null
     },
+    photo: fileUploadSchema,
     isSold: { type: Boolean, default: false },
     isLocked: { type: Boolean, default: false },
     price: Number,
@@ -107,4 +124,4 @@ carpetSchema.index({
 // tslint:disable-next-line: variable-name
 const Carpet = model<ICarpet>('Carpet', carpetSchema);
 
-export { Carpet, ICarpet, ICarpetSupplier };
+export { Carpet, ICarpet, ICarpetSupplier, IFileUpload };

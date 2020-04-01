@@ -71,6 +71,14 @@ class CarpetRepository extends BaseDBRepository<ICarpet> {
   ): Promise<boolean> {
     return super.updateById(id, { branch }, options);
   }
+
+  updatePhoto(
+    id: string,
+    body: any,
+    options?: IDBQueryOptions
+  ): IDBQuery<ICarpet> {
+    return super.findByIdAndUpdate(id, { photo: body }, options);
+  }
 }
 
 const carpetRepository = new CarpetRepository(Carpet);
