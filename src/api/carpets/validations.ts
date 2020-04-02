@@ -5,6 +5,7 @@ import {
   CarpetMaterial,
   Branch
 } from '../../common/enums';
+import { CarpetLocation } from '../../common/enums/CarpetLocation';
 
 const ADD_CARPET = joi.object({
   width: joi.number().required(),
@@ -26,6 +27,10 @@ const ADD_CARPET = joi.object({
     .trim()
     .valid(...Object.values(CarpetType))
     .required(),
+  location: joi
+    .string()
+    .trim()
+    .valid(...Object.values(CarpetLocation)),
   material: joi
     .string()
     .trim()
