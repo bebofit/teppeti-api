@@ -11,7 +11,9 @@ class ClientRepository extends BaseDBRepository<IClient> {
 
   searchClients(options: IDBQueryOptions): IDBQuery<IClient> {
     const $regex = new RegExp(options.search, 'i');
-    return super.find({ $or: [{ phoneNumber: { $regex }, name: { $regex } }] });
+    return super.find({
+      $or: [{ phoneNumber: { $regex } }, { name: { $regex } }]
+    });
   }
 }
 
