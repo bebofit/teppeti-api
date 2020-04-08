@@ -6,6 +6,7 @@ import {
   Branch
 } from '../../common/enums';
 import { CarpetLocation } from '../../common/enums/CarpetLocation';
+import { IClient } from './Client';
 
 type ICarpetSupplier =
   | 'Bhadhoi'
@@ -40,17 +41,19 @@ interface IFileUpload extends Document {
 interface ICarpet extends Document {
   id: string;
   code: string;
-  photo?: IFileUpload;
   width: number;
-  height: number;
+  length: number;
   supplier: ICarpetSupplier;
   material: ICarpetMaterial;
   type: ICarpetType;
   branch: IBranch;
-  price: number;
   pricePerSquareMeter: number;
   isLocked: boolean;
   isSold: boolean;
+  client?: string | IClient;
+  photo?: IFileUpload;
+  price?: number;
+  finalPricePerSquareMeter?: number;
 }
 
 const fileUploadSchema = new Schema(
@@ -124,4 +127,11 @@ carpetSchema.index({
 // tslint:disable-next-line: variable-name
 const Carpet = model<ICarpet>('Carpet', carpetSchema);
 
-export { Carpet, ICarpet, ICarpetSupplier, IFileUpload };
+export {
+  Carpet,
+  ICarpet,
+  ICarpetSupplier,
+  ICarpetMaterial,
+  ICarpetType,
+  IFileUpload
+};

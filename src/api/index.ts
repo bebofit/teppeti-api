@@ -4,6 +4,7 @@ import authRoutes from './auth';
 import carpetsRoutes from './carpets';
 import clientsRoutes from './clients';
 import movingStocksRoutes from './moving-stock';
+import salesRoutes from './sales';
 import trailsRoutes from './trials';
 import usersRoutes from './users';
 
@@ -15,5 +16,6 @@ router.use('/carpets', isAuthenticated, carpetsRoutes);
 router.use('/clients', isAuthenticated, clientsRoutes);
 router.use('/moving-stocks', isAuthenticated, movingStocksRoutes);
 router.use('/trials', isAuthenticated, trailsRoutes);
+router.use('/sales', isAuthenticated, salesRoutes);
 
 export default router;

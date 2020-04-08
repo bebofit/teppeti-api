@@ -51,8 +51,8 @@ class CarpetRepository extends BaseDBRepository<ICarpet> {
     finalPricePerSquareMeter: string,
     client: string,
     options?: IDBQueryOptions
-  ): Promise<boolean> {
-    return super.updateById(
+  ): IDBQuery<ICarpet> {
+    return super.findByIdAndUpdate(
       id,
       {
         finalPricePerSquareMeter,

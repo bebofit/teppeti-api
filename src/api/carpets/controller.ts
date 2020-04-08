@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { IRequest } from '../../common/types';
 import * as carpetValidations from './validations';
 import * as carpetsService from './service';
+import * as salesService from '../sales/service';
 import {
   validateBody,
   extractPaginationOptions,
@@ -16,6 +17,7 @@ import {
 } from 'http-status';
 import { Branch } from '../../common/enums';
 import { storageService } from '../../common/services';
+import { startTransaction } from '../../database';
 
 async function getAllCarepts(req: IRequest, res: Response): Promise<any> {
   const paginationOptions = extractPaginationOptions(req.query);
@@ -82,17 +84,32 @@ async function sellCarpet(req: IRequest, res: Response): Promise<any> {
     req.body,
     carpetValidations.SELL_CARPET
   );
-  const isUpdated = await carpetsService.sellCarpet(
-    carpetId,
-    finalPricePerSquareMeter,
-    client
-  );
-  if (!isUpdated) {
-    throw {
-      statusCode: NOT_FOUND,
-      errorCode: 'Cannot find Carpet'
-    };
-  }
+  await startTransaction(async trx => {
+    const carpet = await carpetsService.sellCarpet(
+      carpetId,
+      finalPricePerSquareMeter,
+      client,
+      { trx }
+    );
+    if (!carpet) {
+      throw {
+        statusCode: INTERNAL_SERVER_ERROR,
+        errorCode: 'Cannot find Carpet'
+      };
+    }
+    const saleBody = salesService.prepareBody(
+      carpet,
+      client,
+      finalPricePerSquareMeter
+    );
+    const sale = await salesService.createSale(saleBody, { trx });
+    if (!sale) {
+      throw {
+        statusCode: INTERNAL_SERVER_ERROR,
+        errorCode: 'Cannot Create Sale'
+      };
+    }
+  });
   res.status(NO_CONTENT).send();
 }
 
