@@ -30,7 +30,7 @@ class SaleRepository extends BaseDBRepository<ISale> {
           sales: { $sum: '$price' }
         }
       },
-      { $sort: { _id: -1 } },
+      { $sort: { _id: 1 } },
       {
         $project: {
           //     // yearMonthDayUTC: {
@@ -67,14 +67,14 @@ class SaleRepository extends BaseDBRepository<ISale> {
           $group: {
             _id: '$cc',
             soldItems: { $sum: 1 },
-            sales: { $sum: '$price' }
+            amountPaid: { $sum: '$price' }
           }
         },
-        { $sort: { soldItems: -1 } },
+        { $sort: { soldItems: -1, amountPaid: -1 } },
         {
           $project: {
             soldItems: 1,
-            sales: 1,
+            amountPaid: 1,
             client: {
               name: '$_id.name',
               _id: '$_id._id',

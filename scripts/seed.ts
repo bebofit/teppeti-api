@@ -1,9 +1,26 @@
 import dotenv from 'dotenv';
 dotenv.config();
-
-import { startDB, stopDB, dropDB } from '../src/database';
 import authRepository from '../src/api/auth/repository';
+import {
+  Branch,
+  CarpetMaterial,
+  CarpetSupplier,
+  CarpetType,
+  ClientRef
+} from '../src/common/enums';
+import { CarpetLocation } from '../src/common/enums/CarpetLocation';
 import { hashPassword } from '../src/common/utils';
+import { dropDB, startDB, stopDB } from '../src/database';
+import faker from '../src/lib/faker';
+import * as carpetsService from '../src/api/carpets/service';
+import * as clientsService from '../src/api/clients/service';
+import * as salesService from '../src/api/sales/service';
+import { addDays } from 'date-fns';
+
+const SALES_COUNT = 30;
+
+let soldCarpets: any = [];
+let clients: any = [];
 
 async function seedSuperAdmin(): Promise<void> {
   const body = {
@@ -107,6 +124,83 @@ async function seedSakara(): Promise<void> {
   };
   await authRepository.create(body);
 }
+async function seedCarpets(): Promise<void> {
+  await Promise.all(
+    Array(20)
+      .fill(null)
+      .map(() =>
+        carpetsService.createCarpet({
+          code: Math.floor(Math.random() * 10000).toString(),
+          width: faker.random.number(20),
+          length: faker.random.number(20),
+          supplier: faker.random.arrayElement(Object.values(CarpetSupplier)),
+          material: faker.random.arrayElement(Object.values(CarpetMaterial)),
+          type: faker.random.arrayElement(Object.values(CarpetType)),
+          branch: faker.random.arrayElement(Object.values(Branch)),
+          pricePerSquareMeter: faker.random.number(200),
+          location: faker.random.arrayElement(Object.values(CarpetLocation))
+        })
+      )
+  );
+}
+
+async function seedSoldCarpets(): Promise<void> {
+  soldCarpets = await Promise.all(
+    Array(SALES_COUNT)
+      .fill(null)
+      .map(() =>
+        carpetsService.createCarpet({
+          code: Math.floor(Math.random() * 10000).toString(),
+          width: faker.random.number(20),
+          length: faker.random.number(20),
+          supplier: faker.random.arrayElement(Object.values(CarpetSupplier)),
+          material: faker.random.arrayElement(Object.values(CarpetMaterial)),
+          type: faker.random.arrayElement(Object.values(CarpetType)),
+          branch: faker.random.arrayElement(Object.values(Branch)),
+          pricePerSquareMeter: faker.random.number(200),
+          location: faker.random.arrayElement(Object.values(CarpetLocation)),
+          isSold: true,
+          price: faker.random.number(500),
+          finalPricePerSquareMeter: faker.random.number(200),
+          client: faker.random.arrayElement(clients)
+        })
+      )
+  );
+}
+
+async function seedClients(): Promise<void> {
+  clients = await Promise.all(
+    Array(10)
+      .fill(null)
+      .map(() =>
+        clientsService.createClient({
+          name: faker.name.firstName(),
+          phoneNumber: faker.phone.phoneNumber(),
+          address: faker.address.streetAddress(),
+          reference: faker.random.arrayElement(Object.values(ClientRef))
+        })
+      )
+  );
+}
+
+async function seedSales(): Promise<void> {
+  await Promise.all(
+    Array(SALES_COUNT)
+      .fill(null)
+      .map((v, i) =>
+        salesService.createSale({
+          carpet: soldCarpets[i],
+          client: faker.random.arrayElement(clients),
+          supplier: soldCarpets[i].supplier,
+          material: soldCarpets[i].material,
+          type: soldCarpets[i].type,
+          branch: soldCarpets[i].branch,
+          price: soldCarpets[i].price,
+          date: addDays(new Date(), faker.random.number(5))
+        })
+      )
+  );
+}
 
 (async function seed(): Promise<void> {
   try {
@@ -116,8 +210,12 @@ async function seedSakara(): Promise<void> {
       seedSuperAdmin(),
       seedArkan(),
       seedTagamo3(),
-      seedSakara()
+      seedSakara(),
+      seedCarpets(),
+      seedClients()
     ]);
+    await seedSoldCarpets();
+    await seedSales();
     await stopDB();
   } catch (error) {
     console.log(error);
