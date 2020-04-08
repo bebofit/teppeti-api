@@ -3,10 +3,10 @@ import repository from './repository';
 import { IDBQueryOptions, IDBQuery } from '../../common/types';
 import { Branch } from '../../common/enums';
 
-const getAnalytics = (min: Date, max: Date): Promise<any> =>
+const getAnalytics = (min: Date, max: Date, branch: string): Promise<any> =>
   Promise.all([
-    repository.getSales(min, max),
-    repository.groupClients(min, max)
+    repository.getSales(min, max, branch),
+    repository.groupClients(min, max, branch)
   ]);
 
 const getSaleById = (id: string, options?: IDBQueryOptions): IDBQuery<ISale> =>

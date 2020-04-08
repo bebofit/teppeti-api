@@ -8,48 +8,49 @@ class SaleRepository extends BaseDBRepository<ISale> {
     super(model);
   }
 
-  getSales(min: Date, max: Date): IDBQuery<ISale> {
-    return this.model
-      .aggregate([
-        {
-          $match: {
-            date: { $gte: min, $lte: max }
-          }
-        },
-        {
-          $group: {
-            _id: {
-              $add: [
-                { $dayOfYear: '$date' },
-                { $multiply: [400, { $year: '$date' }] }
-              ]
-            },
-            soldItems: { $sum: 1 },
-            first: { $min: '$date' },
-            sales: { $sum: '$price' }
-          }
-        },
-        { $sort: { _id: -1 } },
-        {
-          $project: {
-            yearMonthDayUTC: {
-              $dateToString: { format: '%d-%m-%Y', date: '$first' }
-            },
-            date: '$first',
-            soldItems: 1,
-            sales: 1,
-            _id: 0
-          }
+  async getSales(min: Date, max: Date, branch: string): Promise<any> {
+    const res = await this.model.aggregate([
+      {
+        $match: {
+          branch,
+          date: { $gte: min, $lte: max }
         }
-      ])
-      .exec();
+      },
+      {
+        $group: {
+          _id: {
+            $add: [
+              { $dayOfYear: '$date' },
+              { $multiply: [400, { $year: '$date' }] }
+            ]
+          },
+          // branch: { $first: '$branch' },
+          // soldItems: { $sum: 1 },
+          // first: { $min: '$date' },
+          sales: { $sum: '$price' }
+        }
+      },
+      { $sort: { _id: -1 } },
+      {
+        $project: {
+          //     // yearMonthDayUTC: {
+          //     //   $dateToString: { format: '%d-%m-%Y', date: '$first' }
+          //     // },
+          //     // date: '$first',
+          sales: 1,
+          _id: 0
+        }
+      }
+    ]);
+    return res.map(s => s.sales);
   }
 
-  groupClients(min: Date, max: Date): IDBQuery<ISale> {
+  groupClients(min: Date, max: Date, branch: string): IDBQuery<ISale> {
     return this.model
       .aggregate([
         {
           $match: {
+            branch,
             date: { $gte: min, $lte: max }
           }
         },

@@ -13,8 +13,10 @@ import * as salesService from './service';
 import * as saleValidations from './validations';
 
 async function getAnalytics(req: IRequest, res: Response): Promise<any> {
+  const { isSuperAdmin, branch } = req.authInfo;
+  const store = isSuperAdmin ? req.query.branch : branch;
   const { min, max } = validateBody(req.query, saleValidations.GET_SALES);
-  const [sales, clients] = await salesService.getAnalytics(min, max);
+  const [sales, clients] = await salesService.getAnalytics(min, max, store);
   res.status(OK).json({ sales, clients });
 }
 
