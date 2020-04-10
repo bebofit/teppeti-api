@@ -129,6 +129,7 @@ const Carpet = model<ICarpet>('Carpet', carpetSchema);
 
 export {
   Carpet,
+  carpetSchema,
   ICarpet,
   ICarpetSupplier,
   ICarpetMaterial,

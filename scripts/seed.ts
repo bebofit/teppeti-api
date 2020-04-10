@@ -188,16 +188,12 @@ async function seedSales(): Promise<void> {
     Array(SALES_COUNT)
       .fill(null)
       .map((v, i) =>
-        salesService.createSale({
-          carpet: soldCarpets[i],
-          client: faker.random.arrayElement(clients),
-          supplier: soldCarpets[i].supplier,
-          material: soldCarpets[i].material,
-          type: soldCarpets[i].type,
-          branch: soldCarpets[i].branch,
-          price: soldCarpets[i].price,
-          date: addDays(new Date(), faker.random.number(5))
-        })
+        salesService.createSale(
+          soldCarpets[i].price,
+          addDays(new Date(), faker.random.number(5)),
+          soldCarpets[i].branch,
+          soldCarpets[i]
+        )
       )
   );
 }

@@ -6,7 +6,6 @@ const router = Router();
 
 router.get('/', errorHandler(controller.getAnalytics));
 router.get('/:saleId', errorHandler(controller.getSaleById));
-router.post('/', errorHandler(controller.createSale));
 router.patch('/:saleId', errorHandler(controller.updateSale));
 router.delete('/:saleId', errorHandler(controller.softDeleteSale));
 

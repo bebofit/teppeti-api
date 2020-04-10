@@ -16,8 +16,14 @@ async function getAnalytics(req: IRequest, res: Response): Promise<any> {
   const { isSuperAdmin, branch } = req.authInfo;
   const store = isSuperAdmin ? req.query.branch : branch;
   const { min, max } = validateBody(req.query, saleValidations.GET_SALES);
-  const [sales, clients] = await salesService.getAnalytics(min, max, store);
-  res.status(OK).json({ sales, clients });
+  const [
+    sales,
+    clients,
+    suppliers,
+    materials,
+    types
+  ] = await salesService.getAnalytics(min, max, store);
+  res.status(OK).json({ sales, clients, suppliers, materials, types });
 }
 
 async function getSaleById(req: IRequest, res: Response): Promise<any> {
@@ -33,19 +39,6 @@ async function getSaleById(req: IRequest, res: Response): Promise<any> {
   res.status(OK).json({
     data: sale
   });
-}
-
-async function createSale(req: IRequest, res: Response): Promise<any> {
-  const body = validateBody(req.body, saleValidations.CREATE);
-  body.date = new Date();
-  const sale = await salesService.createSale(body);
-  if (!sale) {
-    throw {
-      statusCode: INTERNAL_SERVER_ERROR,
-      errorCode: 'Cannot create Sale'
-    };
-  }
-  res.status(CREATED).json();
 }
 
 async function updateSale(req: IRequest, res: Response): Promise<any> {
@@ -74,4 +67,4 @@ async function softDeleteSale(req: IRequest, res: Response): Promise<any> {
   res.status(NO_CONTENT).send();
 }
 
-export { createSale, getAnalytics, getSaleById, updateSale, softDeleteSale };
+export { getAnalytics, getSaleById, updateSale, softDeleteSale };

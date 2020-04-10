@@ -97,12 +97,16 @@ async function sellCarpet(req: IRequest, res: Response): Promise<any> {
         errorCode: 'Cannot find Carpet'
       };
     }
-    const saleBody = salesService.prepareBody(
+    const price = carpet.length * carpet.width * finalPricePerSquareMeter;
+    const sale = await salesService.createSale(
+      price,
+      new Date(),
+      carpet.branch,
       carpet,
-      client,
-      finalPricePerSquareMeter
+      {
+        trx
+      }
     );
-    const sale = await salesService.createSale(saleBody, { trx });
     if (!sale) {
       throw {
         statusCode: INTERNAL_SERVER_ERROR,

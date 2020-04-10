@@ -1,5 +1,6 @@
 import http from 'http';
 import { startDB, stopDB } from './database';
+import { salesJob } from './events';
 import app from './app';
 import config from './config';
 
@@ -28,6 +29,12 @@ async function startServer(): Promise<void> {
   const addr = server.address();
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
   console.log(`Listening on ${bind}`);
+  // start Cron Jobs here
+  startCronJobs();
+}
+
+function startCronJobs(): void {
+  salesJob.start();
 }
 
 async function closeServer(): Promise<void> {
