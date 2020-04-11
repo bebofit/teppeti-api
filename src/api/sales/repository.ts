@@ -26,19 +26,28 @@ class SaleRepository extends BaseDBRepository<ISale> {
   }
 
   async getSales(min: Date, max: Date, branch: string): Promise<any> {
+    const xAxis: any = [];
+    const yAxis: any = [];
     const queryMin = new Date(min.setHours(1, 0, 0, 0));
     const queryMax = new Date(max.setHours(1, 0, 0, 0));
-    const res = await this.model.aggregate([
-      {
-        $match: {
-          branch,
-          date: { $gte: queryMin, $lte: queryMax }
-        }
-      },
-      { $sort: { date: 1 } },
-      { $project: { totalAmount: 1, _id: 0 } }
-    ]);
-    return res.map(s => s.totalAmount);
+    this.model
+      .aggregate([
+        {
+          $match: {
+            branch,
+            date: { $gte: queryMin, $lte: queryMax }
+          }
+        },
+        { $sort: { date: 1 } },
+        { $project: { totalAmount: 1, _id: 0, date: 1 } }
+      ])
+      .then(res =>
+        res.map(sale => {
+          xAxis.push(sale.date);
+          yAxis.push(sale.totalAmount);
+        })
+      );
+    return { xAxis, yAxis };
   }
 
   groupClients(min: Date, max: Date, branch: string): IDBQuery<ISale> {
