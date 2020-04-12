@@ -27,6 +27,7 @@ async function seedSuperAdmin(): Promise<void> {
     name: 'Abo Mervat',
     email: 'superadmin@teppeti.me',
     isSuperAdmin: true,
+    isSalesManager: true,
     branch: 'SA',
     permissions: {
       sales: { T: true, S: true, A: true },
@@ -46,6 +47,7 @@ async function seedArkan(): Promise<void> {
     name: 'Mervat',
     email: 'mervat@teppeti.me',
     branch: 'A',
+    isSalesManager: true,
     permissions: {
       sales: { T: false, S: false, A: true },
       products: { T: false, S: false, A: true },
@@ -79,6 +81,7 @@ async function seedTagamo3(): Promise<void> {
     name: 'Nelly',
     email: 'nelly@teppeti.me',
     branch: 'T',
+    isSalesManager: true,
     permissions: {
       sales: { T: true, S: false, A: false },
       products: { T: true, S: false, A: false },

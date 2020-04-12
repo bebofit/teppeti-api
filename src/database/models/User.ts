@@ -17,6 +17,7 @@ interface IPermission {
 interface IUser extends Document {
   _id: string;
   isSuperAdmin: boolean;
+  isSalesManager: boolean;
   permissions: IPermission;
   mobile: string;
   name: string;
@@ -50,6 +51,7 @@ const userSchema = new Schema(
     name: String,
     email: String,
     isSuperAdmin: { type: Boolean, default: false },
+    isSalesManager: { type: Boolean, default: false },
     branch: {
       type: String,
       enum: Object.values(UserType),

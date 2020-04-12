@@ -2,6 +2,7 @@ import { Model } from 'mongoose';
 import { BaseDBRepository } from '../../common/classes';
 import { IDBQuery, IDBQueryOptions } from '../../common/types';
 import { ISale, Sale, ICarpet } from '../../database/models';
+import { format } from 'date-fns';
 
 class SaleRepository extends BaseDBRepository<ISale> {
   constructor(protected model: Model<ISale>) {
@@ -39,11 +40,17 @@ class SaleRepository extends BaseDBRepository<ISale> {
           }
         },
         { $sort: { date: 1 } },
-        { $project: { totalAmount: 1, _id: 0, date: 1 } }
+        {
+          $project: {
+            totalAmount: 1,
+            _id: 0,
+            date: 1
+          }
+        }
       ])
       .then(res =>
         res.map(sale => {
-          xAxis.push(sale.date);
+          xAxis.push(format(new Date(sale.date), 'dd-MMM-yyyy'));
           yAxis.push(sale.totalAmount);
         })
       );
@@ -99,10 +106,13 @@ class SaleRepository extends BaseDBRepository<ISale> {
       this.groupSupplier(min, max, branch),
       this.numberOfCarpetsSold(min, max, branch)
     ]);
-    return suppliersCarpets.map((supplier: any) => ({
-      name: supplier._id,
-      percentage: supplier.count / totalNumberCarpets
-    }));
+    const labels: any = [];
+    const percentages: any = [];
+    suppliersCarpets.map((supplier: any) => {
+      labels.push(supplier._id),
+        percentages.push(supplier.count / totalNumberCarpets);
+    });
+    return { labels, percentages };
   }
 
   groupSupplier(min: Date, max: Date, branch: string): IDBQuery<ISale> {
@@ -134,10 +144,13 @@ class SaleRepository extends BaseDBRepository<ISale> {
       this.groupMaterial(min, max, branch),
       this.numberOfCarpetsSold(min, max, branch)
     ]);
-    return materialsCarpets.map((material: any) => ({
-      name: material._id,
-      percentage: material.count / totalNumberCarpets
-    }));
+    const labels: any = [];
+    const percentages: any = [];
+    materialsCarpets.map((material: any) => {
+      labels.push(material._id),
+        percentages.push(material.count / totalNumberCarpets);
+    });
+    return { labels, percentages };
   }
 
   groupMaterial(min: Date, max: Date, branch: string): IDBQuery<ISale> {
@@ -169,10 +182,12 @@ class SaleRepository extends BaseDBRepository<ISale> {
       this.groupType(min, max, branch),
       this.numberOfCarpetsSold(min, max, branch)
     ]);
-    return typesCarpets.map((type: any) => ({
-      name: type._id,
-      percentage: type.count / totalNumberCarpets
-    }));
+    const labels: any = [];
+    const percentages: any = [];
+    typesCarpets.map((type: any) => {
+      labels.push(type._id), percentages.push(type.count / totalNumberCarpets);
+    });
+    return { labels, percentages };
   }
 
   groupType(min: Date, max: Date, branch: string): IDBQuery<ISale> {

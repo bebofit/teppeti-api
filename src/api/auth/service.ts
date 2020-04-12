@@ -95,6 +95,7 @@ async function createAuthUserTokenPair(
 ): Promise<{ accessToken: string; refreshToken: string }> {
   const authInfo: IAuthInfo = {
     userId: user.id,
+    isSalesManager: user.isSalesManager,
     isSuperAdmin: user.isSuperAdmin,
     permissions: user.permissions,
     branch: user.branch

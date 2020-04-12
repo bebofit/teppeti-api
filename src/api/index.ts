@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { isAuthenticated } from '../common/middleware';
+import { isAuthenticated, isSalesManager } from '../common/middleware';
 import authRoutes from './auth';
 import carpetsRoutes from './carpets';
 import clientsRoutes from './clients';
@@ -16,6 +16,6 @@ router.use('/carpets', isAuthenticated, carpetsRoutes);
 router.use('/clients', isAuthenticated, clientsRoutes);
 router.use('/moving-stocks', isAuthenticated, movingStocksRoutes);
 router.use('/trials', isAuthenticated, trailsRoutes);
-router.use('/sales', isAuthenticated, salesRoutes);
+router.use('/sales', isAuthenticated, isSalesManager, salesRoutes);
 
 export default router;
