@@ -21,9 +21,10 @@ async function getAnalytics(req: IRequest, res: Response): Promise<any> {
     clients,
     suppliers,
     materials,
-    types
+    types,
+    carpets
   ] = await salesService.getAnalytics(min, max, store);
-  res.status(OK).json({ sales, clients, suppliers, materials, types });
+  res.status(OK).json({ sales, clients, suppliers, materials, types, carpets });
 }
 
 async function getSaleById(req: IRequest, res: Response): Promise<any> {

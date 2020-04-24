@@ -38,8 +38,8 @@ class MovingStockRepository extends BaseDBRepository<IMovingStock> {
       { _id: id, receiver: body.receiver },
       {
         receivedCarpets: body.receivedCarpets,
-        status: MovingStockStatus.Received,
-        $pull: { sentCarpets: { $in: body.receivedCarpets } }
+        status: MovingStockStatus.Received
+        // $pull: { sentCarpets: { $in: body.receivedCarpets } }
       },
       options
     );

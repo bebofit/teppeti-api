@@ -95,7 +95,16 @@ const carpetSchema = new Schema(
       ref: 'Client',
       default: null
     },
-    photo: fileUploadSchema,
+    photo: {
+      type: fileUploadSchema,
+      default: () => ({
+        type: 'Image',
+        size: '30',
+        path: 'misc/15285015_210987272691273_3848920454272905498_n.png',
+        url:
+          'https://tappeti-001.s3.us-east-2.amazonaws.com/misc/15285015_210987272691273_3848920454272905498_n.jpg'
+      })
+    },
     isSold: { type: Boolean, default: false },
     isLocked: { type: Boolean, default: false },
     price: Number,

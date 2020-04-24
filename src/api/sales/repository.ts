@@ -102,15 +102,11 @@ class SaleRepository extends BaseDBRepository<ISale> {
   }
 
   async supplierPieChart(min: Date, max: Date, branch: string): Promise<any> {
-    const [suppliersCarpets, totalNumberCarpets] = await Promise.all([
-      this.groupSupplier(min, max, branch),
-      this.numberOfCarpetsSold(min, max, branch)
-    ]);
+    const suppliersCarpets = await this.groupSupplier(min, max, branch);
     const labels: any = [];
     const percentages: any = [];
     suppliersCarpets.map((supplier: any) => {
-      labels.push(supplier._id),
-        percentages.push(supplier.count / totalNumberCarpets);
+      labels.push(supplier._id), percentages.push(supplier.count);
     });
     return { labels, percentages };
   }
@@ -140,15 +136,11 @@ class SaleRepository extends BaseDBRepository<ISale> {
   }
 
   async materialPieChart(min: Date, max: Date, branch: string): Promise<any> {
-    const [materialsCarpets, totalNumberCarpets] = await Promise.all([
-      this.groupMaterial(min, max, branch),
-      this.numberOfCarpetsSold(min, max, branch)
-    ]);
+    const materialsCarpets = await this.groupMaterial(min, max, branch);
     const labels: any = [];
     const percentages: any = [];
     materialsCarpets.map((material: any) => {
-      labels.push(material._id),
-        percentages.push(material.count / totalNumberCarpets);
+      labels.push(material._id), percentages.push(material.count);
     });
     return { labels, percentages };
   }
@@ -178,14 +170,11 @@ class SaleRepository extends BaseDBRepository<ISale> {
   }
 
   async typePieChart(min: Date, max: Date, branch: string): Promise<any> {
-    const [typesCarpets, totalNumberCarpets] = await Promise.all([
-      this.groupType(min, max, branch),
-      this.numberOfCarpetsSold(min, max, branch)
-    ]);
+    const typesCarpets = await this.groupType(min, max, branch);
     const labels: any = [];
     const percentages: any = [];
     typesCarpets.map((type: any) => {
-      labels.push(type._id), percentages.push(type.count / totalNumberCarpets);
+      labels.push(type._id), percentages.push(type.count);
     });
     return { labels, percentages };
   }
@@ -214,29 +203,17 @@ class SaleRepository extends BaseDBRepository<ISale> {
       .exec();
   }
 
-  async numberOfCarpetsSold(
-    min: Date,
-    max: Date,
-    branch: string
-  ): Promise<any> {
+  async soldCarpets(min: Date, max: Date, branch: string): Promise<any> {
     const queryMin = new Date(min.setHours(1, 0, 0, 0));
     const queryMax = new Date(max.setHours(1, 0, 0, 0));
-    return this.model
-      .aggregate([
-        {
-          $match: {
-            branch,
-            date: { $gte: queryMin, $lte: queryMax }
-          }
-        },
-        {
-          $unwind: '$carpets'
-        },
-        {
-          $count: 'count'
-        }
-      ])
-      .then((res: any) => res[0].count);
+    return super
+      .find({ branch, date: { $gte: queryMin, $lte: queryMax } })
+      .then((res: any) =>
+        res.map((s: ISale) => ({
+          date: format(new Date(s.date), 'dd-MMM-yyyy'),
+          data: s.carpets
+        }))
+      );
   }
 }
 

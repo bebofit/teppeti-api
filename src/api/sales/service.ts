@@ -8,7 +8,8 @@ const getAnalytics = (min: Date, max: Date, branch: string): Promise<any> =>
     repository.groupClients(min, max, branch),
     repository.supplierPieChart(min, max, branch),
     repository.materialPieChart(min, max, branch),
-    repository.typePieChart(min, max, branch)
+    repository.typePieChart(min, max, branch),
+    repository.soldCarpets(min, max, branch)
   ]);
 
 const getSaleById = (id: string, options?: IDBQueryOptions): IDBQuery<ISale> =>

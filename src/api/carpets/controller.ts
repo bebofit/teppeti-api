@@ -150,7 +150,11 @@ async function updatePhoto(req: IRequest, res: Response): Promise<any> {
     await storageService.deleteFile(file.key);
     throw { statusCode: NOT_FOUND };
   }
-  if (carpet.photo) {
+  if (
+    carpet.photo &&
+    carpet.photo.path !==
+      'misc/15285015_210987272691273_3848920454272905498_n.png'
+  ) {
     await storageService.deleteFile(carpet.photo.path);
   }
   res.status(OK).json({
