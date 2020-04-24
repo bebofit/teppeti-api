@@ -23,7 +23,7 @@ async function getMovingStocksBySender(
 ): Promise<any> {
   const paginationOptions = extractPaginationOptions(req.query);
   const { isSuperAdmin, branch } = req.authInfo;
-  const sender = isSuperAdmin ? req.query.sender : branch;
+  const sender = isSuperAdmin ? req.query.branch : branch;
   const movingStocks = await movingStocksService.getMovingStocksBySender(
     sender,
     paginationOptions
@@ -39,7 +39,7 @@ async function getMovingStocksByReceiver(
 ): Promise<any> {
   const paginationOptions = extractPaginationOptions(req.query);
   const { isSuperAdmin, branch } = req.authInfo;
-  const receiver = isSuperAdmin ? req.query.receiver : branch;
+  const receiver = isSuperAdmin ? req.query.branch : branch;
   const movingStocks = await movingStocksService.getMovingStocksByReceiver(
     receiver,
     paginationOptions
