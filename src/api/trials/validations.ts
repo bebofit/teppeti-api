@@ -15,20 +15,7 @@ const CREATE_SUPER_ADMIN = joi.object({
     .date()
     .min('now')
     .required(),
-  contact: joi.object({
-    name: joi
-      .string()
-      .trim()
-      .required(),
-    address: joi
-      .string()
-      .trim()
-      .required(),
-    mobile: joi
-      .string()
-      .trim()
-      .required()
-  })
+  client: joi.objectId().required()
 });
 
 const CREATE = joi.object({
