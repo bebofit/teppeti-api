@@ -24,8 +24,8 @@ let clients: any = [];
 
 async function seedSuperAdmin(): Promise<void> {
   const body = {
-    name: 'Abo Mervat',
-    email: 'superadmin@teppeti.me',
+    name: 'Mohamed Maghawry',
+    email: 'superadmin@tappeti-eg.com',
     isSuperAdmin: true,
     isSalesManager: true,
     branch: 'SA',
@@ -35,7 +35,7 @@ async function seedSuperAdmin(): Promise<void> {
       movingStock: { T: true, S: true, A: true },
       trials: { T: true, S: true, A: true }
     },
-    username: 'abomervat',
+    username: 'mohamed',
     password: hashPassword('123123123'),
     mobile: '12313123123213'
   };
@@ -45,7 +45,7 @@ async function seedSuperAdmin(): Promise<void> {
 async function seedArkan(): Promise<void> {
   const body1 = {
     name: 'Mervat',
-    email: 'mervat@teppeti.me',
+    email: 'mervat@tappeti-eg.com',
     branch: 'A',
     isSalesManager: true,
     permissions: {
@@ -61,7 +61,7 @@ async function seedArkan(): Promise<void> {
   await authRepository.create(body1);
   const body2 = {
     name: 'Arkan Branch',
-    email: 'arkan@teppeti.me',
+    email: 'arkan@tappeti-eg.com',
     branch: 'A',
     permissions: {
       sales: { T: false, S: false, A: false },
@@ -79,7 +79,7 @@ async function seedArkan(): Promise<void> {
 async function seedTagamo3(): Promise<void> {
   const body1 = {
     name: 'Nelly',
-    email: 'nelly@teppeti.me',
+    email: 'nelly@tappeti-eg.com',
     branch: 'T',
     isSalesManager: true,
     permissions: {
@@ -95,7 +95,7 @@ async function seedTagamo3(): Promise<void> {
   await authRepository.create(body1);
   const body2 = {
     name: 'Downtown Tagamo3 Branch',
-    email: 'downtown@teppeti.me',
+    email: 'downtown@tappeti-eg.com',
     branch: 'T',
     permissions: {
       sales: { T: false, S: false, A: false },
@@ -113,7 +113,7 @@ async function seedTagamo3(): Promise<void> {
 async function seedSakara(): Promise<void> {
   const body = {
     name: 'Sakara Branch',
-    email: 'sakara@teppeti.me',
+    email: 'sakara@tappeti-eg.com',
     branch: 'S',
     permissions: {
       sales: { T: false, S: false, A: false },

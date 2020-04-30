@@ -3,6 +3,7 @@ export interface IConfig {
   JWT_SECRET: string;
   CRYPTO_SECRET: string;
   DB_HOST: string;
+  DB_HOST_LOCAL: string;
   DB_PORT: number;
   DB_NAME: string;
   DB_USER: string;

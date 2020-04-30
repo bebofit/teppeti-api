@@ -1,13 +1,23 @@
 import mongoose, { ClientSession } from 'mongoose';
-import config, { isProduction, isTesting } from '../config';
+import config, { isProduction, isTesting, isDevelopment } from '../config';
 
-const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = config;
+const {
+  DB_HOST,
+  DB_PORT,
+  DB_NAME,
+  DB_USER,
+  DB_PASSWORD,
+  DB_HOST_LOCAL
+} = config;
 
 async function startDB(): Promise<void> {
-  await mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}`, {
-    dbName: isTesting ? 'teppetiTestDB' : DB_NAME,
-    user: DB_USER,
-    pass: DB_PASSWORD,
+  const mongoUrl = isDevelopment
+    ? `mongodb://${DB_HOST_LOCAL}:${DB_PORT}`
+    : `mongodb+srv://${DB_HOST}`;
+  await mongoose.connect(mongoUrl, {
+    dbName: isTesting ? 'funankTestDB' : DB_NAME,
+    user: isDevelopment ? '' : DB_USER,
+    pass: isDevelopment ? '' : DB_PASSWORD,
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
