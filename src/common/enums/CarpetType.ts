@@ -3,5 +3,6 @@ export enum CarpetType {
   Contemporary = 'Contemporary',
   Modern = 'Modern',
   Handloom = 'Handloom',
-  Kilim = 'Kilim'
+  Kilim = 'Kilim',
+  Platonic = 'Platonic Designs'
 }

@@ -206,14 +206,26 @@ class SaleRepository extends BaseDBRepository<ISale> {
   async soldCarpets(min: Date, max: Date, branch: string): Promise<any> {
     const queryMin = new Date(min.setHours(1, 0, 0, 0));
     const queryMax = new Date(max.setHours(1, 0, 0, 0));
-    return super
-      .find({ branch, date: { $gte: queryMin, $lte: queryMax } })
-      .then((res: any) =>
-        res.map((s: ISale) => ({
-          date: format(new Date(s.date), 'dd-MMM-yyyy'),
-          data: s.carpets
-        }))
-      );
+    return this.model
+      .aggregate([
+        {
+          $match: {
+            branch,
+            date: { $gte: queryMin, $lte: queryMax }
+          }
+        },
+        {
+          $unwind: '$carpets'
+        },
+        {
+          $project: {
+            _id: 0,
+            carpets: 1
+          }
+        }
+      ])
+      .exec()
+      .then((res: any) => res.map((c: any) => c.carpets));
   }
 }
 

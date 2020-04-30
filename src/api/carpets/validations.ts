@@ -105,7 +105,19 @@ const UPDATE_CARPET = joi.object({
             CarpetMaterial.WoolAndSilk,
             CarpetMaterial.WoolAndSariSilk
           ),
-          otherwise: joi.valid(CarpetMaterial.WoolAndViscose)
+          otherwise: joi.when('type', {
+            is: CarpetType.Kilim,
+            then: joi.valid(
+              CarpetMaterial.Wool,
+              CarpetMaterial.Cotton,
+              CarpetMaterial.WoolAndCotton
+            ),
+            otherwise: joi.when('type', {
+              is: CarpetType.Platonic,
+              then: joi.valid(CarpetMaterial.Wool, CarpetMaterial.Viscose),
+              otherwise: joi.valid(CarpetMaterial.WoolAndViscose)
+            })
+          })
         })
       })
     })
