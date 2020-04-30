@@ -48,37 +48,4 @@ describe('Admin API', () => {
     registerMobileBody = null;
     await stopDB();
   });
-
-  describe('Register Mobile', () => {
-    it('Should throw a body validation error on incorrect fields in the body', async () => {
-      // Arrange
-      const body = {};
-      // Act
-      const res = await request.post(`${apiUrl}/registerMobile`).send(body);
-      // Assert
-      expect(res).toHaveProperty('status', UNPROCESSABLE_ENTITY);
-      expect(res.body).toHaveProperty('errorCode', BODY_VALIDATION);
-    });
-
-    it('Should fail if an admin with the provided email exists', async () => {
-      // Arrange
-      const body = registerMobileBody();
-      await usersService.createUser(body);
-      // Act
-      const res = await request.post(`${apiUrl}/registerMobile`).send(body);
-      // Assert
-      expect(res).toHaveProperty('status', CONFLICT);
-    });
-
-    it('Should register user mobile', async () => {
-      // Arrange
-      const body = registerMobileBody();
-      // Act
-      const res = await request.post(`${apiUrl}/registerMobile`).send(body);
-      // Assert
-      expect(res).toHaveProperty('status', CREATED);
-      const createdUser = await authService.getAuthUserByMobile(body.mobile);
-      expect(body.mobile).toEqual(createdUser.mobile);
-    });
-  });
 });
