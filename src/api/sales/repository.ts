@@ -3,6 +3,7 @@ import { BaseDBRepository } from '../../common/classes';
 import { IDBQuery, IDBQueryOptions } from '../../common/types';
 import { ISale, Sale, ICarpet } from '../../database/models';
 import { format } from 'date-fns';
+import { ClientRef } from '../../common/enums';
 
 class SaleRepository extends BaseDBRepository<ISale> {
   constructor(protected model: Model<ISale>) {
@@ -226,6 +227,133 @@ class SaleRepository extends BaseDBRepository<ISale> {
       ])
       .exec()
       .then((res: any) => res.map((c: any) => c.carpets));
+  }
+
+  groupColor(min: Date, max: Date, branch: string): IDBQuery<ISale> {
+    const queryMin = new Date(min.setHours(1, 0, 0, 0));
+    const queryMax = new Date(max.setHours(1, 0, 0, 0));
+    return this.model
+      .aggregate([
+        {
+          $match: {
+            branch,
+            date: { $gte: queryMin, $lte: queryMax }
+          }
+        },
+        {
+          $unwind: '$carpets'
+        },
+        {
+          $group: {
+            _id: '$carpets.color.primary',
+            count: { $sum: 1 }
+          }
+        }
+      ])
+      .exec();
+  }
+
+  async colorPieChart(min: Date, max: Date, branch: string): Promise<any> {
+    const colorsCarpets = await this.groupColor(min, max, branch);
+    const labels: any = [];
+    const percentages: any = [];
+    colorsCarpets.map((color: any) => {
+      labels.push(color._id), percentages.push(color.count);
+    });
+    return { labels, percentages };
+  }
+
+  groupReferralsType(min: Date, max: Date, branch: string): IDBQuery<ISale> {
+    const queryMin = new Date(min.setHours(1, 0, 0, 0));
+    const queryMax = new Date(max.setHours(1, 0, 0, 0));
+    return this.model
+      .aggregate([
+        {
+          $match: {
+            branch,
+            date: { $gte: queryMin, $lte: queryMax }
+          }
+        },
+        {
+          $unwind: '$carpets'
+        },
+        {
+          $lookup: {
+            from: 'clients',
+            localField: 'carpets.client',
+            foreignField: '_id',
+            as: 'cc'
+          }
+        },
+        { $unwind: '$cc' },
+        {
+          $group: {
+            _id: '$cc.reference.type',
+            count: { $sum: 1 }
+          }
+        }
+      ])
+      .exec();
+  }
+
+  async referralTypePieChart(
+    min: Date,
+    max: Date,
+    branch: string
+  ): Promise<any> {
+    const referralsCarpets = await this.groupReferralsType(min, max, branch);
+    const labels: any = [];
+    const percentages: any = [];
+    referralsCarpets.map((referral: any) => {
+      labels.push(referral._id), percentages.push(referral.count);
+    });
+    return { labels, percentages };
+  }
+
+  async groupReferralsWho(min: Date, max: Date, branch: string): Promise<any> {
+    const queryMin = new Date(min.setHours(1, 0, 0, 0));
+    const queryMax = new Date(max.setHours(1, 0, 0, 0));
+    return this.model
+      .aggregate([
+        {
+          $match: {
+            branch,
+            date: { $gte: queryMin, $lte: queryMax }
+          }
+        },
+        {
+          $unwind: '$carpets'
+        },
+        {
+          $lookup: {
+            from: 'clients',
+            localField: 'carpets.client',
+            foreignField: '_id',
+            as: 'cc'
+          }
+        },
+        { $unwind: '$cc' },
+        {
+          $match: {
+            'cc.reference.type': ClientRef.Other
+          }
+        },
+        {
+          $group: {
+            _id: '$cc.reference.who',
+            count: { $sum: 1 }
+          }
+        },
+        { $sort: { count: 1 } },
+        {
+          $project: {
+            _id: 0,
+            who: '$_id',
+            count: 1
+          }
+        }
+      ])
+      .exec();
   }
 }
 

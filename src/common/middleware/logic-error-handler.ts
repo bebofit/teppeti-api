@@ -14,7 +14,17 @@ function middleware(
   }
   const statusCode = err.statusCode || INTERNAL_SERVER_ERROR;
   const errorCode = err.errorCode;
-  if (errorCode) {
+  const message = err.message;
+  if (message && errorCode) {
+    res.status(statusCode).json({
+      errorCode,
+      message
+    });
+  } else if (message) {
+    res.status(statusCode).json({
+      errorCode
+    });
+  } else if (errorCode) {
     res.status(statusCode).json({
       errorCode
     });

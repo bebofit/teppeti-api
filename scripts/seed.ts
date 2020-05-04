@@ -6,7 +6,9 @@ import {
   CarpetMaterial,
   CarpetSupplier,
   CarpetType,
-  ClientRef
+  ClientRef,
+  CarpetKnot,
+  CarpetColor
 } from '../src/common/enums';
 import { CarpetLocation } from '../src/common/enums/CarpetLocation';
 import { hashPassword } from '../src/common/utils';
@@ -141,7 +143,12 @@ async function seedCarpets(): Promise<void> {
           type: faker.random.arrayElement(Object.values(CarpetType)),
           branch: faker.random.arrayElement(Object.values(Branch)),
           pricePerSquareMeter: faker.random.number(200),
-          location: faker.random.arrayElement(Object.values(CarpetLocation))
+          location: faker.random.arrayElement(Object.values(CarpetLocation)),
+          knot: faker.random.arrayElement(Object.values(CarpetKnot)),
+          color: {
+            primary: faker.random.arrayElement(Object.values(CarpetColor)),
+            secondary: faker.commerce.color()
+          }
         })
       )
   );
@@ -165,7 +172,12 @@ async function seedSoldCarpets(): Promise<void> {
           isSold: true,
           price: faker.random.number(500),
           finalPricePerSquareMeter: faker.random.number(200),
-          client: faker.random.arrayElement(clients)
+          client: faker.random.arrayElement(clients),
+          knot: faker.random.arrayElement(Object.values(CarpetKnot)),
+          color: {
+            primary: faker.random.arrayElement(Object.values(CarpetColor)),
+            secondary: faker.commerce.color()
+          }
         })
       )
   );
@@ -175,14 +187,20 @@ async function seedClients(): Promise<void> {
   clients = await Promise.all(
     Array(10)
       .fill(null)
-      .map(() =>
-        clientsService.createClient({
+      .map(() => {
+        const reference: any = {
+          type: faker.random.arrayElement(Object.values(ClientRef))
+        };
+        if (reference.type === ClientRef.Other) {
+          reference.who = faker.company.companyName();
+        }
+        return clientsService.createClient({
+          reference,
           name: faker.name.firstName(),
           phoneNumber: faker.phone.phoneNumber(),
-          address: faker.address.streetAddress(),
-          reference: faker.random.arrayElement(Object.values(ClientRef))
-        })
-      )
+          address: faker.address.streetAddress()
+        });
+      })
   );
 }
 

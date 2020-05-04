@@ -22,9 +22,22 @@ async function getAnalytics(req: IRequest, res: Response): Promise<any> {
     suppliers,
     materials,
     types,
-    carpets
+    carpets,
+    colors,
+    referralsType,
+    otherReferrals
   ] = await salesService.getAnalytics(min, max, store);
-  res.status(OK).json({ sales, clients, suppliers, materials, types, carpets });
+  res.status(OK).json({
+    sales,
+    clients,
+    suppliers,
+    materials,
+    types,
+    carpets,
+    colors,
+    referralsType,
+    otherReferrals
+  });
 }
 
 async function getSaleById(req: IRequest, res: Response): Promise<any> {
@@ -34,7 +47,7 @@ async function getSaleById(req: IRequest, res: Response): Promise<any> {
   if (!sale) {
     throw {
       statusCode: NOT_FOUND,
-      errorCode: 'Cannot find Sale'
+      message: 'Cannot find Sale'
     };
   }
   res.status(OK).json({
@@ -50,7 +63,7 @@ async function updateSale(req: IRequest, res: Response): Promise<any> {
   if (!sale) {
     throw {
       statusCode: NOT_FOUND,
-      errorCode: 'Cannot find Sale'
+      message: 'Cannot find Sale'
     };
   }
   res.status(OK).json({

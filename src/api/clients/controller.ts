@@ -34,7 +34,7 @@ async function getClientById(req: IRequest, res: Response): Promise<any> {
   if (!client) {
     throw {
       statusCode: NOT_FOUND,
-      errorCode: 'Cannot find Client'
+      message: 'Cannot find Client'
     };
   }
   res.status(OK).json({
@@ -48,7 +48,7 @@ async function createClient(req: IRequest, res: Response): Promise<any> {
   if (!client) {
     throw {
       statusCode: INTERNAL_SERVER_ERROR,
-      errorCode: 'Cannot create Carpet'
+      message: 'Cannot create Client'
     };
   }
   res.status(CREATED).json({
@@ -64,7 +64,7 @@ async function updateClient(req: IRequest, res: Response): Promise<any> {
   if (!carpet) {
     throw {
       statusCode: NOT_FOUND,
-      errorCode: 'Cannot find Client'
+      message: 'Cannot find Client'
     };
   }
   res.status(OK).json({

@@ -9,3 +9,5 @@ export * from './MovingStockStatus';
 export * from './Permission';
 export * from './TrialStatus';
 export * from './UserType';
+export * from './CarpetColor';
+export * from './CarpetKnot';

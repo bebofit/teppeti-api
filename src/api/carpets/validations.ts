@@ -3,7 +3,9 @@ import {
   CarpetType,
   CarpetSupplier,
   CarpetMaterial,
-  Branch
+  Branch,
+  CarpetKnot,
+  CarpetColor
 } from '../../common/enums';
 import { CarpetLocation } from '../../common/enums/CarpetLocation';
 
@@ -31,6 +33,24 @@ const ADD_CARPET = joi.object({
     .string()
     .trim()
     .valid(...Object.values(CarpetLocation)),
+  knot: joi
+    .string()
+    .trim()
+    .uppercase()
+    .valid(...Object.values(CarpetKnot))
+    .required(),
+  color: joi.object({
+    primary: joi
+      .string()
+      .trim()
+      .uppercase()
+      .valid(...Object.values(CarpetColor))
+      .required(),
+    secondary: joi
+      .string()
+      .trim()
+      .required()
+  }),
   material: joi
     .string()
     .trim()
@@ -82,6 +102,23 @@ const UPDATE_CARPET = joi.object({
     .trim()
     .uppercase()
     .valid(...Object.values(CarpetType)),
+  location: joi
+    .string()
+    .trim()
+    .valid(...Object.values(CarpetLocation)),
+  knot: joi
+    .string()
+    .trim()
+    .uppercase()
+    .valid(...Object.values(CarpetKnot)),
+  color: joi.object({
+    primary: joi
+      .string()
+      .trim()
+      .uppercase()
+      .valid(...Object.values(CarpetColor)),
+    secondary: joi.string().trim()
+  }),
   material: joi
     .string()
     .trim()

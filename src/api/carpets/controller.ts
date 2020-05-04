@@ -54,7 +54,7 @@ async function getCarpetById(req: IRequest, res: Response): Promise<any> {
   if (!carpet) {
     throw {
       statusCode: NOT_FOUND,
-      errorCode: 'Cannot find Carpet'
+      message: 'Cannot find Carpet'
     };
   }
   res.status(OK).json({
@@ -69,7 +69,7 @@ async function addCarpet(req: IRequest, res: Response): Promise<any> {
   if (!carpet) {
     throw {
       statusCode: INTERNAL_SERVER_ERROR,
-      errorCode: 'Cannot create Carpet'
+      message: 'Cannot create Carpet'
     };
   }
   res.status(CREATED).json({
@@ -94,7 +94,7 @@ async function sellCarpet(req: IRequest, res: Response): Promise<any> {
     if (!carpet) {
       throw {
         statusCode: INTERNAL_SERVER_ERROR,
-        errorCode: 'Cannot find Carpet'
+        message: 'Cannot find Carpet'
       };
     }
     const price = carpet.length * carpet.width * finalPricePerSquareMeter;
@@ -110,7 +110,7 @@ async function sellCarpet(req: IRequest, res: Response): Promise<any> {
     if (!sale) {
       throw {
         statusCode: INTERNAL_SERVER_ERROR,
-        errorCode: 'Cannot Create Sale'
+        message: 'Cannot Create Sale'
       };
     }
   });
@@ -125,7 +125,7 @@ async function updateCarpet(req: IRequest, res: Response): Promise<any> {
   if (!carpet) {
     throw {
       statusCode: NOT_FOUND,
-      errorCode: 'Cannot find Carpet'
+      message: 'Cannot find Carpet'
     };
   }
   res.status(OK).json({

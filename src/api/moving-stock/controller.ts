@@ -58,7 +58,7 @@ async function getMovingStockById(req: IRequest, res: Response): Promise<any> {
   if (!movingStock) {
     throw {
       statusCode: NOT_FOUND,
-      errorCode: 'Cannot find Moving Stock'
+      message: 'Cannot find Moving Stock'
     };
   }
   res.status(OK).json({
@@ -81,7 +81,7 @@ async function createMovingStock(req: IRequest, res: Response): Promise<any> {
     if (!movingStock) {
       throw {
         statusCode: INTERNAL_SERVER_ERROR,
-        errorCode: 'Cannot create Moving Stock'
+        message: 'Cannot create Moving Stock'
       };
     }
     const isLocked = await carpetsService.lockCarpets(movingStock.sentCarpets, {

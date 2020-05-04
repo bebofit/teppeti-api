@@ -18,7 +18,10 @@ interface IClient extends Document {
 
 const clientSchema = new Schema(
   {
-    reference: { type: String, required: true, enum: Object.values(ClientRef) },
+    reference: {
+      type: { type: String, required: true, enum: Object.values(ClientRef) },
+      who: String
+    },
     name: { type: String, required: true },
     address: { type: String, required: true },
     phoneNumber: { type: String, unique: true, required: true },

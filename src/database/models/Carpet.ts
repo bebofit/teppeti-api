@@ -3,10 +3,28 @@ import {
   CarpetSupplier,
   CarpetMaterial,
   CarpetType,
-  Branch
+  Branch,
+  CarpetKnot,
+  CarpetColor
 } from '../../common/enums';
 import { CarpetLocation } from '../../common/enums/CarpetLocation';
 import { IClient } from './Client';
+
+type ICarpetColor =
+  | 'Green'
+  | 'Yellow'
+  | 'Purple'
+  | 'Pink'
+  | 'Orange'
+  | 'Gold'
+  | 'Silver'
+  | 'Offwhite'
+  | 'Black'
+  | 'Brown'
+  | 'Beige'
+  | 'Red'
+  | 'Blue'
+  | 'Grey';
 
 type ICarpetSupplier =
   | 'Bhadhoi'
@@ -31,6 +49,8 @@ type ICarpetType = 'Classic' | 'Contemporary' | 'Modern' | 'Handloom';
 
 type IBranch = 'T' | 'S' | 'A';
 
+type ICarpetKnot = 'Lebanese' | 'Handloom' | 'Persian';
+
 interface IFileUpload extends Document {
   type: string;
   size: number;
@@ -46,6 +66,7 @@ interface ICarpet extends Document {
   supplier: ICarpetSupplier;
   material: ICarpetMaterial;
   type: ICarpetType;
+  knot: ICarpetKnot;
   branch: IBranch;
   pricePerSquareMeter: number;
   isLocked: boolean;
@@ -89,6 +110,15 @@ const carpetSchema = new Schema(
       enum: Object.values(CarpetLocation),
       default: CarpetLocation.Display
     },
+    knot: { type: String, required: true, enum: Object.values(CarpetKnot) },
+    color: {
+      primary: {
+        type: String,
+        required: true,
+        enum: Object.values(CarpetColor)
+      },
+      secondary: { type: String, required: true }
+    },
     finalPricePerSquareMeter: Number,
     client: {
       type: Schema.Types.ObjectId,
@@ -121,6 +151,7 @@ const carpetSchema = new Schema(
         delete ret.lock;
         delete ret.__v;
         delete ret.isLocked;
+        delete ret.isSold;
       }
     }
   }

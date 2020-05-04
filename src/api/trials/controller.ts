@@ -55,7 +55,7 @@ async function createTrail(req: IRequest, res: Response): Promise<any> {
     if (!trial) {
       throw {
         statusCode: INTERNAL_SERVER_ERROR,
-        errorCode: 'Cannot create Trial'
+        message: 'Cannot create Trial'
       };
     }
     const isLocked = await carpetsService.lockCarpets(trial.sentCarpets, {

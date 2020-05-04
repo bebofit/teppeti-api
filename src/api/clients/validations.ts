@@ -2,11 +2,14 @@ import joi from '../../lib/joi';
 import { ClientRef } from '../../common/enums';
 
 const CREATE_CLIENT = joi.object({
-  reference: joi
-    .string()
-    .trim()
-    .valid(...Object.values(ClientRef))
-    .required(),
+  reference: joi.object({
+    type: joi
+      .string()
+      .trim()
+      .valid(...Object.values(ClientRef))
+      .required(),
+    who: joi.string().trim()
+  }),
   name: joi
     .string()
     .trim()
@@ -22,10 +25,13 @@ const CREATE_CLIENT = joi.object({
 });
 
 const UPDATE_CLIENT = joi.object({
-  reference: joi
-    .string()
-    .trim()
-    .valid(...Object.values(ClientRef)),
+  reference: joi.object({
+    type: joi
+      .string()
+      .trim()
+      .valid(...Object.values(ClientRef)),
+    who: joi.string().trim()
+  }),
   name: joi.string().trim(),
   address: joi.string().trim(),
   phoneNumber: joi.string().trim()

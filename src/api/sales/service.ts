@@ -9,7 +9,10 @@ const getAnalytics = (min: Date, max: Date, branch: string): Promise<any> =>
     repository.supplierPieChart(min, max, branch),
     repository.materialPieChart(min, max, branch),
     repository.typePieChart(min, max, branch),
-    repository.soldCarpets(min, max, branch)
+    repository.soldCarpets(min, max, branch),
+    repository.colorPieChart(min, max, branch),
+    repository.referralTypePieChart(min, max, branch),
+    repository.groupReferralsWho(min, max, branch)
   ]);
 
 const getSaleById = (id: string, options?: IDBQueryOptions): IDBQuery<ISale> =>
