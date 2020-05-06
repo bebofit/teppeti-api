@@ -95,12 +95,10 @@ const UPDATE_CARPET = joi.object({
   supplier: joi
     .string()
     .trim()
-    .uppercase()
     .valid(...Object.values(CarpetSupplier)),
   type: joi
     .string()
     .trim()
-    .uppercase()
     .valid(...Object.values(CarpetType)),
   location: joi
     .string()
@@ -109,13 +107,11 @@ const UPDATE_CARPET = joi.object({
   knot: joi
     .string()
     .trim()
-    .uppercase()
     .valid(...Object.values(CarpetKnot)),
   color: joi.object({
     primary: joi
       .string()
       .trim()
-      .uppercase()
       .valid(...Object.values(CarpetColor)),
     secondary: joi.string().trim()
   }),
