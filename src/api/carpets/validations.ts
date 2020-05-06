@@ -36,14 +36,12 @@ const ADD_CARPET = joi.object({
   knot: joi
     .string()
     .trim()
-    .uppercase()
     .valid(...Object.values(CarpetKnot))
     .required(),
   color: joi.object({
     primary: joi
       .string()
       .trim()
-      .uppercase()
       .valid(...Object.values(CarpetColor))
       .required(),
     secondary: joi
