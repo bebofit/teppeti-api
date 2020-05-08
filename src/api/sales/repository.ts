@@ -21,7 +21,6 @@ class SaleRepository extends BaseDBRepository<ISale> {
     const body = carpet
       ? { date, $push: { carpets: carpet }, $inc: { totalAmount: amount } }
       : { date, totalAmount: 0 };
-    console.log(body);
     return this.model.findOneAndUpdate({ branch, date: queryDate }, body, {
       ...options,
       upsert: true
