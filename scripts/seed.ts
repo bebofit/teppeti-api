@@ -146,7 +146,7 @@ async function seedCarpets(): Promise<void> {
           location: faker.random.arrayElement(Object.values(CarpetLocation)),
           knot: faker.random.arrayElement(Object.values(CarpetKnot)),
           color: {
-            primary: faker.random.arrayElement(Object.values(CarpetColor)),
+            primary: [faker.random.arrayElement(Object.values(CarpetColor))],
             secondary: faker.commerce.color()
           }
         })
@@ -175,7 +175,7 @@ async function seedSoldCarpets(): Promise<void> {
           client: faker.random.arrayElement(clients),
           knot: faker.random.arrayElement(Object.values(CarpetKnot)),
           color: {
-            primary: faker.random.arrayElement(Object.values(CarpetColor)),
+            primary: [faker.random.arrayElement(Object.values(CarpetColor))],
             secondary: faker.commerce.color()
           }
         })
