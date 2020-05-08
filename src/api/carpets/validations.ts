@@ -107,10 +107,12 @@ const UPDATE_CARPET = joi.object({
     .trim()
     .valid(...Object.values(CarpetKnot)),
   color: joi.object({
-    primary: joi
-      .string()
-      .trim()
-      .valid(...Object.values(CarpetColor)),
+    primary: joi.array().items(
+      joi
+        .string()
+        .trim()
+        .valid(...Object.values(CarpetColor))
+    ),
     secondary: joi.string().trim()
   }),
   material: joi

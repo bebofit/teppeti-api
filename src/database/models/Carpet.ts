@@ -112,11 +112,13 @@ const carpetSchema = new Schema(
     },
     knot: { type: String, required: true, enum: Object.values(CarpetKnot) },
     color: {
-      primary: {
-        type: String,
-        required: true,
-        enum: Object.values(CarpetColor)
-      },
+      primary: [
+        {
+          type: String,
+          required: true,
+          enum: Object.values(CarpetColor)
+        }
+      ],
       secondary: { type: String, required: true }
     },
     finalPricePerSquareMeter: Number,

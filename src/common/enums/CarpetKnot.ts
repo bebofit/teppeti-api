@@ -1,5 +1,5 @@
 export enum CarpetKnot {
-  Lebanese = 'Lebanese',
-  Handloom = 'Handloom',
-  Persian = 'Persian'
+  Nepalese = 'Nepalese/ Tibetan',
+  Persian = 'Persian',
+  Handloom = 'Handloom'
 }

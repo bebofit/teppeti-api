@@ -91,6 +91,7 @@ async function sellCarpet(req: IRequest, res: Response): Promise<any> {
       client,
       { trx }
     );
+    console.log(carpet);
     if (!carpet) {
       throw {
         statusCode: INTERNAL_SERVER_ERROR,
