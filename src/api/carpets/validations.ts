@@ -45,10 +45,7 @@ const ADD_CARPET = joi.object({
         .trim()
         .valid(...Object.values(CarpetColor))
     ),
-    secondary: joi
-      .string()
-      .trim()
-      .required()
+    secondary: joi.string().trim()
   }),
   material: joi
     .string()

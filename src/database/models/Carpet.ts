@@ -119,7 +119,7 @@ const carpetSchema = new Schema(
           enum: Object.values(CarpetColor)
         }
       ],
-      secondary: { type: String, required: true }
+      secondary: String
     },
     finalPricePerSquareMeter: Number,
     client: {
