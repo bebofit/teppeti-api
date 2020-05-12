@@ -62,9 +62,17 @@ async function getCarpetById(req: IRequest, res: Response): Promise<any> {
   });
 }
 
+async function searchCarpets(req: IRequest, res: Response): Promise<any> {
+  const paginationOptions = extractPaginationOptions(req.query);
+  const body = validateBody(req.body, carpetValidations.SEARCH_CARPETS);
+  const data = await carpetsService.searchCarpets(body, paginationOptions);
+  res.status(OK).json({
+    data
+  });
+}
+
 async function addCarpet(req: IRequest, res: Response): Promise<any> {
   const body = validateBody(req.body, carpetValidations.ADD_CARPET);
-  body.code = Math.floor(Math.random() * 10000);
   const carpet = await carpetsService.createCarpet(body);
   if (!carpet) {
     throw {
@@ -175,6 +183,7 @@ async function softDeleteCarpet(req: IRequest, res: Response): Promise<any> {
 export {
   addCarpet,
   sellCarpet,
+  searchCarpets,
   getCarpetsByBranch,
   getAllCarepts,
   getSoldCarepts,

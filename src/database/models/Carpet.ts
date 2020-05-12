@@ -9,6 +9,7 @@ import {
 } from '../../common/enums';
 import { CarpetLocation } from '../../common/enums/CarpetLocation';
 import { IClient } from './Client';
+import { generateId } from '../../common/utils';
 
 type ICarpetColor =
   | 'Green'
@@ -89,7 +90,7 @@ const fileUploadSchema = new Schema(
 
 const carpetSchema = new Schema(
   {
-    code: { type: String, required: true },
+    code: { type: String, default: () => generateId() },
     width: { type: Number, required: true },
     length: { type: Number, required: true },
     supplier: {

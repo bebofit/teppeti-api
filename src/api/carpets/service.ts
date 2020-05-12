@@ -16,6 +16,11 @@ const getCarpetById = (
   options?: IDBQueryOptions
 ): IDBQuery<ICarpet> => repository.findById(id, options);
 
+const searchCarpets = (
+  body: any,
+  options: IDBQueryOptions
+): IDBQuery<ICarpet> => repository.searchCarpets(body, options);
+
 const getSoldCarpets = (options?: IDBQueryOptions): IDBQuery<ICarpet> =>
   repository.getSoldCarpets(options);
 
@@ -66,6 +71,7 @@ const softDeleteCarpet = (
 export {
   getCarpets,
   getSoldCarpets,
+  searchCarpets,
   getCarpetsByBranch,
   moveCarpetToBranch,
   getCarpetById,

@@ -9,12 +9,41 @@ class CarpetRepository extends BaseDBRepository<ICarpet> {
     super(model);
   }
 
+  prepareSearchBody(options: any): any {
+    const conditions: any = {};
+    if (options.code) {
+      conditions.code = options.code;
+    } else {
+      if (options.minPrice || options.maxPrice) {
+        conditions.pricePerSquareMeter = {};
+        if (options.minPrice) {
+          conditions.pricePerSquareMeter.$gte = options.minPrice;
+        }
+        if (options.maxPrice) {
+          conditions.pricePerSquareMeter.$lte = options.maxPrice;
+        }
+      }
+      if (options.supplier) {
+        conditions.supplier = options.supplier;
+      }
+      if (options.type) {
+        conditions.type = options.type;
+      }
+    }
+    return conditions;
+  }
+
   getCarpets(options?: IDBQueryOptions): IDBQuery<ICarpet> {
     return super.find({ isSold: false, isLocked: false }, options);
   }
 
   getSoldCarpets(options?: IDBQueryOptions): IDBQuery<ICarpet> {
     return super.find({ isSold: true }, options);
+  }
+
+  searchCarpets(body: any, options: IDBQueryOptions): IDBQuery<ICarpet> {
+    const conditions = this.prepareSearchBody(body);
+    return super.find({ $or: [conditions] }, options);
   }
 
   lockCarpets(

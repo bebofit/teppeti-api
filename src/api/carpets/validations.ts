@@ -159,4 +159,22 @@ const SELL_CARPET = joi.object({
   client: joi.objectId().required()
 });
 
-export { ADD_CARPET, UPDATE_CARPET, SELL_CARPET };
+const SEARCH_CARPETS = joi.object({
+  code: joi.string().trim(),
+  type: joi.array().items(
+    joi
+      .string()
+      .trim()
+      .valid(...Object.values(CarpetType))
+  ),
+  supplier: joi.array().items(
+    joi
+      .string()
+      .trim()
+      .valid(...Object.values(CarpetSupplier))
+  ),
+  minPrice: joi.number(),
+  maxPrice: joi.number()
+});
+
+export { ADD_CARPET, UPDATE_CARPET, SELL_CARPET, SEARCH_CARPETS };
