@@ -24,10 +24,10 @@ class CarpetRepository extends BaseDBRepository<ICarpet> {
         }
       }
       if (options.supplier) {
-        conditions.supplier = options.supplier;
+        conditions.supplier = { $in: options.supplier };
       }
       if (options.type) {
-        conditions.type = options.type;
+        conditions.type = { $in: options.type };
       }
     }
     return conditions;
