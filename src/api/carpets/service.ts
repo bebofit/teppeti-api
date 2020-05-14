@@ -17,9 +17,10 @@ const getCarpetById = (
 ): IDBQuery<ICarpet> => repository.findById(id, options);
 
 const searchCarpets = (
+  branch: string,
   body: any,
   options: IDBQueryOptions
-): IDBQuery<ICarpet> => repository.searchCarpets(body, options);
+): IDBQuery<ICarpet> => repository.searchCarpets(branch, body, options);
 
 const getSoldCarpets = (options?: IDBQueryOptions): IDBQuery<ICarpet> =>
   repository.getSoldCarpets(options);

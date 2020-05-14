@@ -64,8 +64,13 @@ async function getCarpetById(req: IRequest, res: Response): Promise<any> {
 
 async function searchCarpets(req: IRequest, res: Response): Promise<any> {
   const paginationOptions = extractPaginationOptions(req.query);
+  const { branch } = req.authInfo;
   const body = validateBody(req.body, carpetValidations.SEARCH_CARPETS);
-  const data = await carpetsService.searchCarpets(body, paginationOptions);
+  const data = await carpetsService.searchCarpets(
+    branch,
+    body,
+    paginationOptions
+  );
   res.status(OK).json({
     data
   });

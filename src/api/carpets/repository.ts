@@ -41,9 +41,13 @@ class CarpetRepository extends BaseDBRepository<ICarpet> {
     return super.find({ isSold: true }, options);
   }
 
-  searchCarpets(body: any, options: IDBQueryOptions): IDBQuery<ICarpet> {
+  searchCarpets(
+    branch: string,
+    body: any,
+    options: IDBQueryOptions
+  ): IDBQuery<ICarpet> {
     const conditions = this.prepareSearchBody(body);
-    return super.find({ $or: [conditions] }, options);
+    return super.find({ branch, $or: [conditions] }, options);
   }
 
   lockCarpets(
