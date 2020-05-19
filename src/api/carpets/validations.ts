@@ -50,14 +50,12 @@ const ADD_CARPET = joi.object({
   material: joi
     .string()
     .trim()
-    .required()
     .when('type', {
       is: CarpetType.Classic,
       then: joi.valid(
         CarpetMaterial.Wool,
         CarpetMaterial.WoolAndSilk,
-        CarpetMaterial.WoolAndBamboSilk,
-        CarpetMaterial.Silk
+        CarpetMaterial.WoolAndBamboSilk
       ),
       otherwise: joi.when('type', {
         is: CarpetType.Contemporary,
@@ -70,13 +68,21 @@ const ADD_CARPET = joi.object({
           then: joi.valid(
             CarpetMaterial.WoolAndBamboSilk,
             CarpetMaterial.WoolAndSilk,
-            CarpetMaterial.WoolAndSariSilk,
-            CarpetMaterial.Silk
+            CarpetMaterial.WoolAndSariSilk
           ),
-          otherwise: joi.valid(
-            CarpetMaterial.WoolAndViscose,
-            CarpetMaterial.WoolAndBamboSilk
-          )
+          otherwise: joi.when('type', {
+            is: CarpetType.Kilim,
+            then: joi.valid(
+              CarpetMaterial.Wool,
+              CarpetMaterial.Cotton,
+              CarpetMaterial.WoolAndCotton
+            ),
+            otherwise: joi.when('type', {
+              is: CarpetType.Pharonic,
+              then: joi.valid(CarpetMaterial.Viscose),
+              otherwise: joi.valid(CarpetMaterial.Viscose)
+            })
+          })
         })
       })
     })
@@ -144,9 +150,9 @@ const UPDATE_CARPET = joi.object({
               CarpetMaterial.WoolAndCotton
             ),
             otherwise: joi.when('type', {
-              is: CarpetType.Platonic,
-              then: joi.valid(CarpetMaterial.Wool, CarpetMaterial.Viscose),
-              otherwise: joi.valid(CarpetMaterial.WoolAndViscose)
+              is: CarpetType.Pharonic,
+              then: joi.valid(CarpetMaterial.Viscose),
+              otherwise: joi.valid(CarpetMaterial.Viscose)
             })
           })
         })

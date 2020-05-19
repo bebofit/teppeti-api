@@ -13,5 +13,7 @@ export enum CarpetColor {
   Red = 'Red',
   Blue = 'Blue',
   Grey = 'Grey',
-  Teal = 'Teal'
+  Teal = 'Teal',
+  Greige = 'Greige',
+  Burgundy = 'Burgundy'
 }

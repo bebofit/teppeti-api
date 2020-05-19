@@ -8,7 +8,10 @@ const { S3_BUCKET } = config;
 const folder = (req: IRequest): string => `carpets/${req.authInfo.branch}`;
 
 const transformations = {
-  image: () => sharp().jpeg({ quality: 60, progressive: true })
+  image: () =>
+    sharp()
+      .png({ quality: 80 })
+      .jpeg({ quality: 80, progressive: true })
 };
 
 const multerInstance = multerFactory(

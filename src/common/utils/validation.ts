@@ -62,6 +62,7 @@ function validateBody(body: any, schema: joi.Schema): any {
     const errors = joiErrors.details.reduce(
       (obj: Record<string, string>, error: joi.ValidationErrorItem) => {
         const key = error.path.join('.');
+        console.log(error);
         obj[key] = `err_${error.type.split('.')[1]}`;
         return obj;
       },

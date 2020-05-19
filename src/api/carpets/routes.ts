@@ -9,7 +9,7 @@ router.get('/all', isSuperAdmin, errorHandler(controller.getAllCarepts));
 router.get('/sold', isSuperAdmin, errorHandler(controller.getSoldCarepts));
 router.get('/', errorHandler(controller.getCarpetsByBranch));
 router.get('/:carpetId', errorHandler(controller.getCarpetById));
-router.post('/', uploadCarpetPhoto, errorHandler(controller.addCarpet));
+router.post('/', errorHandler(controller.addCarpet));
 router.post('/search', errorHandler(controller.searchCarpets));
 router.patch(
   '/:carpetId/photo',
@@ -18,6 +18,6 @@ router.patch(
 );
 router.post('/sell/:carpetId', errorHandler(controller.sellCarpet));
 router.patch('/:carpetId', errorHandler(controller.updateCarpet));
-router.delete('/:carpetId', errorHandler(controller.softDeleteCarpet));
+router.delete('/:carpetId', errorHandler(controller.deleteCarpet));
 
 export default router;

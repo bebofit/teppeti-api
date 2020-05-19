@@ -77,15 +77,9 @@ async function searchCarpets(req: IRequest, res: Response): Promise<any> {
 }
 
 async function addCarpet(req: IRequest, res: Response): Promise<any> {
+  console.log(req.body);
   const body = validateBody(req.body, carpetValidations.ADD_CARPET);
-  const file = req.file as Express.MulterS3.File;
-  const photo = {
-    type: file.mimetype,
-    size: file.size,
-    path: file.key,
-    url: file.location
-  };
-  const carpet = await carpetsService.createCarpet({ ...body, photo });
+  const carpet = await carpetsService.createCarpet(body);
   if (!carpet) {
     throw {
       statusCode: INTERNAL_SERVER_ERROR,
@@ -192,6 +186,24 @@ async function softDeleteCarpet(req: IRequest, res: Response): Promise<any> {
   res.status(NO_CONTENT).send();
 }
 
+async function deleteCarpet(req: IRequest, res: Response): Promise<any> {
+  const carpetId = req.params.carpetId;
+  validateDBId(req.params.carpetId);
+  const carpet = await carpetsService.getCarpetById(carpetId);
+  if (
+    carpet.photo &&
+    carpet.photo.path !==
+      'misc/15285015_210987272691273_3848920454272905498_n.png'
+  ) {
+    await storageService.deleteFile(carpet.photo.path);
+  }
+  const isDeleted = await carpetsService.deleteCarpet(carpetId);
+  if (!isDeleted) {
+    throw { statusCode: INTERNAL_SERVER_ERROR };
+  }
+  res.status(NO_CONTENT).send();
+}
+
 export {
   addCarpet,
   sellCarpet,
@@ -202,5 +214,6 @@ export {
   getCarpetById,
   updateCarpet,
   updatePhoto,
-  softDeleteCarpet
+  softDeleteCarpet,
+  deleteCarpet
 };

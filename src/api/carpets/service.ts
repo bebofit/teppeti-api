@@ -69,6 +69,11 @@ const softDeleteCarpet = (
   options?: IDBQueryOptions
 ): Promise<boolean> => repository.softDeleteById(id, options);
 
+const deleteCarpet = (
+  id: string,
+  options?: IDBQueryOptions
+): Promise<boolean> => repository.deleteById(id, options);
+
 export {
   getCarpets,
   getSoldCarpets,
@@ -82,5 +87,6 @@ export {
   unLockCarpets,
   updateCarpet,
   updatePhoto,
-  softDeleteCarpet
+  softDeleteCarpet,
+  deleteCarpet
 };
