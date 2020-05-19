@@ -78,7 +78,14 @@ async function searchCarpets(req: IRequest, res: Response): Promise<any> {
 
 async function addCarpet(req: IRequest, res: Response): Promise<any> {
   const body = validateBody(req.body, carpetValidations.ADD_CARPET);
-  const carpet = await carpetsService.createCarpet(body);
+  const file = req.file as Express.MulterS3.File;
+  const photo = {
+    type: file.mimetype,
+    size: file.size,
+    path: file.key,
+    url: file.location
+  };
+  const carpet = await carpetsService.createCarpet({ ...body, photo });
   if (!carpet) {
     throw {
       statusCode: INTERNAL_SERVER_ERROR,

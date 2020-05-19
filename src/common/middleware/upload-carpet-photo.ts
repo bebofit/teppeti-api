@@ -5,7 +5,7 @@ import { IRequest } from '../types';
 
 const { S3_BUCKET } = config;
 
-const folder = (req: IRequest): string => `carpets`;
+const folder = (req: IRequest): string => `carpets/${req.authInfo.branch}`;
 
 const transformations = {
   image: () => sharp().jpeg({ quality: 60, progressive: true })
