@@ -12,8 +12,8 @@ class TrialRepository extends BaseDBRepository<ITrial> {
   getTrails(sender: Branch, options?: IDBQueryOptions): IDBQuery<ITrial> {
     return super
       .find({ sender }, options)
-      .populate('receivedCarpets', 'id code')
-      .populate('sentCarpets', 'id code');
+      .populate('receivedCarpets')
+      .populate('sentCarpets');
   }
 
   acceptTrial(

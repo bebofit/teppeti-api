@@ -15,8 +15,8 @@ class MovingStockRepository extends BaseDBRepository<IMovingStock> {
   ): IDBQuery<IMovingStock> {
     return super
       .find({ sender }, options)
-      .populate('receivedCarpets', 'id code')
-      .populate('sentCarpets', 'id code');
+      .populate('receivedCarpets')
+      .populate('sentCarpets');
   }
 
   getMovingStocksByReceiver(
@@ -25,8 +25,8 @@ class MovingStockRepository extends BaseDBRepository<IMovingStock> {
   ): IDBQuery<IMovingStock> {
     return super
       .find({ receiver }, options)
-      .populate('receivedCarpets', 'id code')
-      .populate('sentCarpets', 'id code');
+      .populate('receivedCarpets')
+      .populate('sentCarpets');
   }
 
   acceptMovingStock(
