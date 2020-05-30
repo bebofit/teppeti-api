@@ -55,7 +55,8 @@ const ADD_CARPET = joi.object({
       then: joi.valid(
         CarpetMaterial.Wool,
         CarpetMaterial.WoolAndSilk,
-        CarpetMaterial.WoolAndBamboSilk
+        CarpetMaterial.WoolAndBamboSilk,
+        CarpetMaterial.Silk
       ),
       otherwise: joi.when('type', {
         is: CarpetType.Contemporary,
@@ -68,7 +69,8 @@ const ADD_CARPET = joi.object({
           then: joi.valid(
             CarpetMaterial.WoolAndBamboSilk,
             CarpetMaterial.WoolAndSilk,
-            CarpetMaterial.WoolAndSariSilk
+            CarpetMaterial.WoolAndSariSilk,
+            CarpetMaterial.Silk
           ),
           otherwise: joi.when('type', {
             is: CarpetType.Kilim,
@@ -127,7 +129,8 @@ const UPDATE_CARPET = joi.object({
       then: joi.valid(
         CarpetMaterial.Wool,
         CarpetMaterial.WoolAndSilk,
-        CarpetMaterial.WoolAndBamboSilk
+        CarpetMaterial.WoolAndBamboSilk,
+        CarpetMaterial.Silk
       ),
       otherwise: joi.when('type', {
         is: CarpetType.Contemporary,
@@ -140,7 +143,8 @@ const UPDATE_CARPET = joi.object({
           then: joi.valid(
             CarpetMaterial.WoolAndBamboSilk,
             CarpetMaterial.WoolAndSilk,
-            CarpetMaterial.WoolAndSariSilk
+            CarpetMaterial.WoolAndSariSilk,
+            CarpetMaterial.Silk
           ),
           otherwise: joi.when('type', {
             is: CarpetType.Kilim,
