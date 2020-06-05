@@ -137,6 +137,9 @@ async function sellCarpet(req: IRequest, res: Response): Promise<any> {
         message: 'Cannot find Carpet'
       };
     }
+    console.log(branch);
+    console.log(carpet.branch);
+    console.log(carpet.branch !== branch);
     if (!isSuperAdmin || carpet.branch !== branch) {
       throw {
         statusCode: FORBIDDEN,
