@@ -13,7 +13,8 @@ import {
   CREATED,
   OK,
   NOT_FOUND,
-  NO_CONTENT
+  NO_CONTENT,
+  FORBIDDEN
 } from 'http-status';
 import { Branch } from '../../common/enums';
 import { storageService } from '../../common/services';
@@ -62,6 +63,30 @@ async function getCarpetById(req: IRequest, res: Response): Promise<any> {
   });
 }
 
+async function getCarpetByIdNotSold(
+  req: IRequest,
+  res: Response
+): Promise<any> {
+  const carpetId = req.params.carpetId;
+  validateDBId(req.params.carpetId);
+  const carpet = await carpetsService.getCarpetById(carpetId);
+  if (!carpet) {
+    throw {
+      statusCode: NOT_FOUND,
+      message: 'Cannot find Carpet'
+    };
+  }
+  if (carpet.isSold) {
+    throw {
+      statusCode: FORBIDDEN,
+      message: 'Carpet Already Sold'
+    };
+  }
+  res.status(OK).json({
+    data: carpet
+  });
+}
+
 async function searchCarpets(req: IRequest, res: Response): Promise<any> {
   const paginationOptions = extractPaginationOptions(req.query);
   const { branch } = req.authInfo;
@@ -93,6 +118,7 @@ async function addCarpet(req: IRequest, res: Response): Promise<any> {
 
 async function sellCarpet(req: IRequest, res: Response): Promise<any> {
   const carpetId = req.params.carpetId;
+  const { isSuperAdmin, branch } = req.authInfo;
   validateDBId(req.params.carpetId);
   const { finalPricePerSquareMeter, client } = validateBody(
     req.body,
@@ -107,8 +133,14 @@ async function sellCarpet(req: IRequest, res: Response): Promise<any> {
     );
     if (!carpet) {
       throw {
-        statusCode: INTERNAL_SERVER_ERROR,
+        statusCode: NOT_FOUND,
         message: 'Cannot find Carpet'
+      };
+    }
+    if (!isSuperAdmin || carpet.branch !== branch) {
+      throw {
+        statusCode: FORBIDDEN,
+        message: 'Cannot sell other branch carpet'
       };
     }
     const price = carpet.length * carpet.width * finalPricePerSquareMeter;
@@ -212,6 +244,7 @@ export {
   getAllCarepts,
   getSoldCarepts,
   getCarpetById,
+  getCarpetByIdNotSold,
   updateCarpet,
   updatePhoto,
   softDeleteCarpet,
