@@ -137,14 +137,13 @@ async function sellCarpet(req: IRequest, res: Response): Promise<any> {
         message: 'Cannot find Carpet'
       };
     }
-    console.log(branch);
-    console.log(carpet.branch);
-    console.log(carpet.branch !== branch);
-    if (!isSuperAdmin || carpet.branch !== branch) {
-      throw {
-        statusCode: FORBIDDEN,
-        message: 'Cannot sell other branch carpet'
-      };
+    if (!isSuperAdmin) {
+      if (carpet.branch !== branch) {
+        throw {
+          statusCode: FORBIDDEN,
+          message: 'Cannot sell other branch carpet'
+        };
+      }
     }
     const price = carpet.length * carpet.width * finalPricePerSquareMeter;
     const sale = await salesService.createSale(
