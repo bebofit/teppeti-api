@@ -22,7 +22,7 @@ function middleware(
     });
   } else if (message) {
     res.status(statusCode).json({
-      errorCode
+      message
     });
   } else if (errorCode) {
     res.status(statusCode).json({
