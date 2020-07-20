@@ -37,8 +37,8 @@ async function seedSuperAdmin(): Promise<void> {
       movingStock: { T: true, S: true, A: true },
       trials: { T: true, S: true, A: true }
     },
-    username: 'mohamed',
-    password: hashPassword('123123123'),
+    username: 'Maghawry',
+    password: hashPassword('migosmigos1965'),
     mobile: '12313123123213'
   };
   await authRepository.create(body);
@@ -56,8 +56,8 @@ async function seedArkan(): Promise<void> {
       movingStock: { T: false, S: false, A: true },
       trials: { T: false, S: false, A: true }
     },
-    username: 'mervat',
-    password: hashPassword('123123123'),
+    username: 'Mervat',
+    password: hashPassword('tappetizayed'),
     mobile: '12313212323213'
   };
   await authRepository.create(body1);
@@ -71,8 +71,8 @@ async function seedArkan(): Promise<void> {
       movingStock: { T: false, S: false, A: true },
       trials: { T: false, S: false, A: true }
     },
-    username: 'arkan',
-    password: hashPassword('123123123'),
+    username: 'Arkan',
+    password: hashPassword('tappetizayed'),
     mobile: '12131312323213'
   };
   await authRepository.create(body2);
@@ -90,8 +90,8 @@ async function seedTagamo3(): Promise<void> {
       movingStock: { T: true, S: false, A: false },
       trials: { T: true, S: false, A: false }
     },
-    username: 'nelly',
-    password: hashPassword('123123123'),
+    username: 'Nelly',
+    password: hashPassword('maghawry2016'),
     mobile: '1231312232135'
   };
   await authRepository.create(body1);
@@ -105,8 +105,8 @@ async function seedTagamo3(): Promise<void> {
       movingStock: { T: true, S: false, A: true },
       trials: { T: true, S: false, A: true }
     },
-    username: 'downtown',
-    password: hashPassword('123123123'),
+    username: 'Downtown',
+    password: hashPassword('maghawry2016'),
     mobile: '123134312323213'
   };
   await authRepository.create(body2);
@@ -123,8 +123,8 @@ async function seedSakara(): Promise<void> {
       movingStock: { T: false, S: true, A: false },
       trials: { T: false, S: true, A: false }
     },
-    username: 'sakara',
-    password: hashPassword('123123123'),
+    username: 'Sakkara',
+    password: hashPassword('sakkara1997'),
     mobile: '123131298323213'
   };
   await authRepository.create(body);
