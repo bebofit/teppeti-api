@@ -133,9 +133,8 @@ const carpetSchema = new Schema(
       default: () => ({
         type: 'Image',
         size: '30',
-        path: 'misc/15285015_210987272691273_3848920454272905498_n.png',
-        url:
-          'https://tappeti-001.s3.us-east-2.amazonaws.com/misc/15285015_210987272691273_3848920454272905498_n.jpg'
+        path: 'misc/logo.jpg',
+        url: 'https://tappeti-001.s3.us-east-2.amazonaws.com/misc/logo.jpg'
       })
     },
     isSold: { type: Boolean, default: false },
@@ -177,5 +176,6 @@ export {
   ICarpetSupplier,
   ICarpetMaterial,
   ICarpetType,
-  IFileUpload
+  IFileUpload,
+  IBranch
 };

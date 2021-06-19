@@ -38,13 +38,10 @@ async function getSoldCarepts(req: IRequest, res: Response): Promise<any> {
 }
 
 async function getCarpetsByBranch(req: IRequest, res: Response): Promise<any> {
-  const paginationOptions = extractPaginationOptions(req.query);
+  // const paginationOptions = extractPaginationOptions(req.query);
   const { isSuperAdmin, branch: authBranch } = req.authInfo;
   const branch = isSuperAdmin ? req.query.branch : authBranch;
-  const carpets = await carpetsService.getCarpetsByBranch(
-    branch,
-    paginationOptions
-  );
+  const carpets = await carpetsService.getCarpetsByBranch(branch);
   res.status(OK).json({ data: carpets });
 }
 
@@ -89,10 +86,16 @@ async function getCarpetByIdNotSold(
 
 async function searchCarpets(req: IRequest, res: Response): Promise<any> {
   const paginationOptions = extractPaginationOptions(req.query);
+  let finalBranch;
   const { branch } = req.authInfo;
   const body = validateBody(req.body, carpetValidations.SEARCH_CARPETS);
+  if (branch === 'SA') {
+    finalBranch = body.branch;
+  } else {
+    finalBranch = branch;
+  }
   const data = await carpetsService.searchCarpets(
-    branch,
+    finalBranch,
     body,
     paginationOptions
   );
@@ -102,7 +105,6 @@ async function searchCarpets(req: IRequest, res: Response): Promise<any> {
 }
 
 async function addCarpet(req: IRequest, res: Response): Promise<any> {
-  console.log(req.body);
   const body = validateBody(req.body, carpetValidations.ADD_CARPET);
   const carpet = await carpetsService.createCarpet(body);
   if (!carpet) {
@@ -198,11 +200,7 @@ async function updatePhoto(req: IRequest, res: Response): Promise<any> {
     await storageService.deleteFile(file.key);
     throw { statusCode: NOT_FOUND };
   }
-  if (
-    carpet.photo &&
-    carpet.photo.path !==
-      'misc/15285015_210987272691273_3848920454272905498_n.png'
-  ) {
+  if (carpet.photo && carpet.photo.path !== 'misc/logo.jpg') {
     await storageService.deleteFile(carpet.photo.path);
   }
   res.status(OK).json({

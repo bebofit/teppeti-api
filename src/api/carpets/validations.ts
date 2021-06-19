@@ -170,6 +170,10 @@ const SELL_CARPET = joi.object({
 });
 
 const SEARCH_CARPETS = joi.object({
+  branch: joi
+    .string()
+    .trim()
+    .valid(...Object.values(Branch)),
   code: joi.string().trim(),
   type: joi.array().items(
     joi

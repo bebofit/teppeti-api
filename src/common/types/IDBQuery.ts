@@ -1,3 +1,3 @@
-import { DocumentQuery, Document } from 'mongoose';
+import { DocumentQuery, Document, EnforceDocument } from 'mongoose';
 
-export type IDBQuery<T extends Document> = DocumentQuery<any, T>;
+export type IDBQuery<T extends Document> = EnforceDocument<any, T>;

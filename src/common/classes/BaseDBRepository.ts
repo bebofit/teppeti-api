@@ -230,35 +230,29 @@ export abstract class BaseDBRepository<T extends Document> {
   softDeleteOne(conditions: any, options?: IDBQueryOptions): Promise<boolean> {
     const parsedOptions = this.parseQueryOptions(options);
     conditions.deletedAt = null;
+    const update: any = {
+      $currentDate: {
+        deletedAt: true
+      }
+    };
     return this.model
-      .updateOne(
-        conditions,
-        {
-          $currentDate: {
-            deletedAt: true
-          }
-        },
-        parsedOptions
-      )
+      .updateOne(conditions, update, parsedOptions)
       .exec()
-      .then(result => result.n === 1);
+      .then((result: any) => result.n === 1);
   }
 
   softDeleteMany(conditions: any, options?: IDBQueryOptions): Promise<boolean> {
     const parsedOptions = this.parseQueryOptions(options);
     conditions.deletedAt = null;
+    const update: any = {
+      $currentDate: {
+        deletedAt: true
+      }
+    };
     return this.model
-      .updateMany(
-        conditions,
-        {
-          $currentDate: {
-            deletedAt: true
-          }
-        },
-        parsedOptions
-      )
+      .updateMany(conditions, update, parsedOptions)
       .exec()
-      .then(result => true);
+      .then((result: any) => true);
   }
 
   softDeleteAll(options?: IDBQueryOptions): Promise<boolean> {

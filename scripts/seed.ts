@@ -37,7 +37,7 @@ async function seedSuperAdmin(): Promise<void> {
       movingStock: { T: true, S: true, A: true },
       trials: { T: true, S: true, A: true }
     },
-    username: 'Maghawry',
+    username: 'maghawry',
     password: hashPassword('migosmigos1965'),
     mobile: '12313123123213'
   };
@@ -56,7 +56,7 @@ async function seedArkan(): Promise<void> {
       movingStock: { T: false, S: false, A: true },
       trials: { T: false, S: false, A: true }
     },
-    username: 'Mervat',
+    username: 'mervat',
     password: hashPassword('tappetizayed'),
     mobile: '12313212323213'
   };
@@ -71,7 +71,7 @@ async function seedArkan(): Promise<void> {
       movingStock: { T: false, S: false, A: true },
       trials: { T: false, S: false, A: true }
     },
-    username: 'Arkan',
+    username: 'arkan',
     password: hashPassword('tappetizayed'),
     mobile: '12131312323213'
   };
@@ -90,7 +90,7 @@ async function seedTagamo3(): Promise<void> {
       movingStock: { T: true, S: false, A: false },
       trials: { T: true, S: false, A: false }
     },
-    username: 'Nelly',
+    username: 'nelly',
     password: hashPassword('maghawry2016'),
     mobile: '1231312232135'
   };
@@ -105,7 +105,7 @@ async function seedTagamo3(): Promise<void> {
       movingStock: { T: true, S: false, A: true },
       trials: { T: true, S: false, A: true }
     },
-    username: 'Downtown',
+    username: 'downtown',
     password: hashPassword('maghawry2016'),
     mobile: '123134312323213'
   };
@@ -123,7 +123,7 @@ async function seedSakara(): Promise<void> {
       movingStock: { T: false, S: true, A: false },
       trials: { T: false, S: true, A: false }
     },
-    username: 'Sakkara',
+    username: 'sakkara',
     password: hashPassword('sakkara1997'),
     mobile: '123131298323213'
   };

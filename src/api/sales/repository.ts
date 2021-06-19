@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { BaseDBRepository } from '../../common/classes';
 import { IDBQuery, IDBQueryOptions } from '../../common/types';
-import { ISale, Sale, ICarpet } from '../../database/models';
+import { ISale, Sale, ICarpet, IBranch } from '../../database/models';
 import { format } from 'date-fns';
 import { ClientRef } from '../../common/enums';
 
@@ -13,7 +13,7 @@ class SaleRepository extends BaseDBRepository<ISale> {
   createSale(
     amount: number,
     date: Date,
-    branch: string,
+    branch: IBranch,
     carpet?: ICarpet,
     options?: IDBQueryOptions
   ): IDBQuery<ISale> {
