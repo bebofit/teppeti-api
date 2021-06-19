@@ -1,5 +1,5 @@
 import { IDBQuery, IDBQueryOptions } from '../../common/types';
-import { ICarpet, ISale } from '../../database/models';
+import { ICarpet, ISale, IBranch } from '../../database/models';
 import repository from './repository';
 
 const getAnalytics = (min: Date, max: Date, branch: string): Promise<any> =>
@@ -21,7 +21,7 @@ const getSaleById = (id: string, options?: IDBQueryOptions): IDBQuery<ISale> =>
 const createSale = (
   amount: number,
   date: Date,
-  branch: string,
+  branch: IBranch,
   carpet?: ICarpet,
   options?: IDBQueryOptions
 ): IDBQuery<ISale> =>
