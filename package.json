@@ -74,14 +74,13 @@
     "ioredis": "^4.14.1",
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.8.4",
+    "mongoose": "^5.10.1",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
     "nanoid": "^2.1.8",
     "nodemailer": "^6.4.2",
-    "rate-limiter-flexible": "^1.2.2",
-    "sharp": "^0.23.4"
+    "rate-limiter-flexible": "^1.2.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
@@ -102,7 +101,6 @@
     "@types/nanoid": "^2.1.0",
     "@types/node": "^12.12.24",
     "@types/nodemailer": "^6.4.0",
-    "@types/sharp": "^0.23.1",
     "@types/supertest": "^2.0.8",
     "faker": "^4.1.0",
     "husky": "^3.1.0",
