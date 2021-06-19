@@ -115,5 +115,8 @@
     "tslint-config-airbnb": "^5.11.2",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.4"
+  },
+  "engines": {
+    "node": ">=0.12"
   }
 }
