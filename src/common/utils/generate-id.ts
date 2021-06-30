@@ -7,7 +7,7 @@ const generateId = () => {
     rtn += numbers.charAt(Math.floor(Math.random() * numbers.length));
   }
   rtn = rtn + new Date().valueOf();
-  return rtn.slice(0, 8);
+  return rtn.slice(0, 6);
 };
 
 export { generateId };

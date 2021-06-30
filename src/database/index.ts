@@ -15,7 +15,7 @@ async function startDB(): Promise<void> {
     ? `mongodb://${DB_HOST_LOCAL}:${DB_PORT}`
     : `mongodb+srv://${DB_HOST}`;
   await mongoose.connect(mongoUrl, {
-    dbName: isTesting ? 'funankTestDB' : DB_NAME,
+    dbName: isTesting ? 'tappetiTestDB' : DB_NAME,
     user: isDevelopment ? '' : DB_USER,
     pass: isDevelopment ? '' : DB_PASSWORD,
     useNewUrlParser: true,

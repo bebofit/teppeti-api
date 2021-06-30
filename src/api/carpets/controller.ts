@@ -24,7 +24,7 @@ async function getAllCarepts(req: IRequest, res: Response): Promise<any> {
   const paginationOptions = extractPaginationOptions(req.query);
   const carpets = await carpetsService.getCarpets(paginationOptions);
   const data = {
-    carpetsT: carpets.filter((c: any) => c.branch === Branch.Tagamo3),
+    carpetsT: carpets.filter((c: any) => c.branch === Branch.DownTown),
     carpetsA: carpets.filter((c: any) => c.branch === Branch.Arkan),
     carpetsS: carpets.filter((c: any) => c.branch === Branch.Sakara)
   };

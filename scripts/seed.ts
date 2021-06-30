@@ -18,6 +18,7 @@ import * as carpetsService from '../src/api/carpets/service';
 import * as clientsService from '../src/api/clients/service';
 import * as salesService from '../src/api/sales/service';
 import { addDays } from 'date-fns';
+import { isProduction } from '../src/config';
 
 const SALES_COUNT = 30;
 
@@ -227,12 +228,14 @@ async function seedSales(): Promise<void> {
       seedSuperAdmin(),
       seedArkan(),
       seedTagamo3(),
-      seedSakara(),
-      seedCarpets(),
-      seedClients()
+      seedSakara()
     ]);
-    await seedSoldCarpets();
-    await seedSales();
+    if (!isProduction) {
+      await seedCarpets();
+      await seedClients();
+      await seedSoldCarpets();
+      await seedSales();
+    }
     await stopDB();
   } catch (error) {
     console.log(error);

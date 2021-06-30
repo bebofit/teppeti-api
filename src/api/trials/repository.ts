@@ -12,7 +12,14 @@ class TrialRepository extends BaseDBRepository<ITrial> {
   getTrails(sender: Branch, options?: IDBQueryOptions): IDBQuery<ITrial> {
     return super
       .find({ sender }, options)
-      .populate('receivedCarpets')
+      .populate('soldCarpets')
+      .populate('sentCarpets');
+  }
+
+  getTrialById(trialId: string, options?: IDBQueryOptions): IDBQuery<ITrial> {
+    return super
+      .findById(trialId, options)
+      .populate('soldCarpets')
       .populate('sentCarpets');
   }
 

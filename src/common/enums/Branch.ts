@@ -1,5 +1,5 @@
 export enum Branch {
-  Tagamo3 = 'T',
+  DownTown = 'T',
   Arkan = 'A',
   Sakara = 'S'
 }

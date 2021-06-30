@@ -100,16 +100,19 @@ async function createMovingStock(req: IRequest, res: Response): Promise<any> {
 async function acceptMovingStock(req: IRequest, res: Response): Promise<any> {
   const movingStockId = req.params.movingStockId;
   validateDBId(req.params.movingStockId);
+  let receiverBranch: string;
   const { isSuperAdmin, branch } = req.authInfo;
   let body: any = {};
   if (!isSuperAdmin) {
     body = validateBody(req.body, movingStockValidations.MOVE_STOCK);
     body.receiver = branch;
+    receiverBranch = branch;
   } else {
     body = validateBody(
       req.body,
       movingStockValidations.MOVE_STOCK_SUPER_ADMIN
     );
+    receiverBranch = body.receiver;
   }
   await startTransaction(async trx => {
     const movingStock = await movingStocksService.getMovingStockByIdAndLock(
@@ -133,7 +136,7 @@ async function acceptMovingStock(req: IRequest, res: Response): Promise<any> {
     }
     const updates = await Promise.all(
       body.receivedCarpets.map((id: string) =>
-        carpetsService.moveCarpetToBranch(id, branch, { trx })
+        carpetsService.moveCarpetToBranch(id, receiverBranch, { trx })
       )
     );
     if (updates.some(u => !u)) {

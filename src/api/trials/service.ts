@@ -16,7 +16,7 @@ const getTrials = (
 const getTrialById = (
   id: string,
   options?: IDBQueryOptions
-): IDBQuery<ITrial> => repository.findById(id, options);
+): IDBQuery<ITrial> => repository.getTrialById(id, options);
 
 const getTrialByIdAndLock = (
   id: string,
