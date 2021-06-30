@@ -102,8 +102,8 @@ async function createAuthUserTokenPair(
   };
   const refreshTokenId = await genToken(16);
   const createdAt = new Date();
-  const accessExpiresAt = addDays(createdAt, 1);
-  const refreshExpiresAt = addDays(createdAt, 30);
+  const accessExpiresAt = addDays(createdAt, 360);
+  const refreshExpiresAt = addDays(createdAt, 360);
   await repository.addRefreshToken(
     user.id,
     {
