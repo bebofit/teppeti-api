@@ -14,6 +14,10 @@ const ADD_CARPET = joi.object({
   length: joi.number().required(),
   pricePerSquareMeter: joi.number().required(),
   imageUrl: joi.string().trim(),
+  code: joi
+    .string()
+    .trim()
+    .required(),
   branch: joi
     .string()
     .trim()
@@ -96,6 +100,7 @@ const UPDATE_CARPET = joi.object({
   pricePerSquareMeter: joi.number(),
   finalPricePerSquareMeter: joi.number(),
   imageUrl: joi.string().trim(),
+  code: joi.string().trim(),
   supplier: joi
     .string()
     .trim()

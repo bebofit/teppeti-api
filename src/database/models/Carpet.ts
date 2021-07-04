@@ -90,7 +90,8 @@ const fileUploadSchema = new Schema(
 
 const carpetSchema = new Schema(
   {
-    code: { type: String, default: () => generateId() },
+    // code: { type: String, default: () => generateId() },
+    code: { type: String, required: true },
     width: { type: Number, required: true },
     length: { type: Number, required: true },
     supplier: {
