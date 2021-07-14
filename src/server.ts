@@ -1,6 +1,6 @@
 import http from 'http';
 import { startDB, stopDB } from './database';
-import { salesJob } from './events';
+import { salesJob, backupJob } from './events';
 import app from './app';
 import config from './config';
 
@@ -35,6 +35,7 @@ async function startServer(): Promise<void> {
 
 function startCronJobs(): void {
   salesJob.start();
+  backupJob.start();
 }
 
 async function closeServer(): Promise<void> {

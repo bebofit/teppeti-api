@@ -2,6 +2,16 @@ import { IMovingStock } from '../../database/models';
 import repository from './repository';
 import { IDBQueryOptions, IDBQuery } from '../../common/types';
 import { Branch } from '../../common/enums';
+import config from '../../config';
+
+const { BACKUP_KEY } = config;
+
+const getAll = (key: string): IDBQuery<IMovingStock> => {
+  if (BACKUP_KEY !== key) {
+    return null;
+  }
+  return repository.findAll();
+};
 
 const getMovingStocksBySender = (
   sender: Branch,
@@ -48,5 +58,6 @@ export {
   getMovingStocksByReceiver,
   createMovingStock,
   acceptMovingStock,
-  softDeleteMovingStock
+  softDeleteMovingStock,
+  getAll
 };

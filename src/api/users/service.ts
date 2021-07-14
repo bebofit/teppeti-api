@@ -6,6 +6,16 @@ import {
 } from '../../common/types';
 import { IUser } from '../../database/models';
 import repository from './repository';
+import config from '../../config';
+
+const { BACKUP_KEY } = config;
+
+const getAll = (key: string): IDBQuery<IUser> => {
+  if (BACKUP_KEY !== key) {
+    return null;
+  }
+  return repository.findAll();
+};
 
 const getUsers = (options?: IDBQueryOptions): Promise<IPaginatedData<IUser>> =>
   Promise.all([
@@ -42,5 +52,6 @@ export {
   createUser,
   updateUser,
   softDeleteUser,
-  isAuthorized
+  isAuthorized,
+  getAll
 };

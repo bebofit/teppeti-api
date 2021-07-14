@@ -7,6 +7,16 @@ import {
 import { ITrial } from '../../database/models';
 import repository from './repository';
 import { Branch } from '../../common/enums';
+import config from '../../config';
+
+const { BACKUP_KEY } = config;
+
+const getAll = (key: string): IDBQuery<ITrial> => {
+  if (BACKUP_KEY !== key) {
+    return null;
+  }
+  return repository.findAll();
+};
 
 const getTrials = (
   sender: Branch,
@@ -58,5 +68,6 @@ export {
   acceptTrial,
   updateTrial,
   softDeleteTrial,
-  isAuthorized
+  isAuthorized,
+  getAll
 };

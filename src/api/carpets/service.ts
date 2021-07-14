@@ -2,6 +2,16 @@ import { ICarpet } from '../../database/models';
 import repository from './repository';
 import { IDBQueryOptions, IDBQuery } from '../../common/types';
 import { Branch } from '../../common/enums';
+import config from '../../config';
+
+const { BACKUP_KEY } = config;
+
+const getAll = (key: string): IDBQuery<ICarpet> => {
+  if (BACKUP_KEY !== key) {
+    return null;
+  }
+  return repository.findAll();
+};
 
 const getCarpets = (options?: IDBQueryOptions): IDBQuery<ICarpet> =>
   repository.getCarpets(options);
@@ -88,5 +98,6 @@ export {
   updateCarpet,
   updatePhoto,
   softDeleteCarpet,
-  deleteCarpet
+  deleteCarpet,
+  getAll
 };

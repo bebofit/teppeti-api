@@ -2,7 +2,7 @@ import { S3 } from 'aws-sdk';
 import config from '../../config';
 import { s3 } from '../../lib/aws-sdk';
 
-const { S3_BUCKET } = config;
+const { S3_BUCKET, BACKUP_KEY } = config;
 
 async function deleteFile(key: string): Promise<boolean> {
   const { $response } = await s3
@@ -29,4 +29,24 @@ async function deleteFiles(keys: string[]): Promise<boolean> {
   return (data as S3.DeleteObjectOutput).DeleteMarker;
 }
 
-export { deleteFile, deleteFiles };
+async function uploadFile(
+  fileName: string,
+  fileData: any,
+  key: string
+): Promise<any> {
+  if (key !== BACKUP_KEY) {
+    return;
+  }
+  const { Location } = await s3
+    .upload({
+      Bucket: S3_BUCKET,
+      Key: `backup/${fileName}.json`,
+      ContentType: 'application/json',
+      Body: JSON.stringify(fileData),
+      ACL: 'public-read'
+    })
+    .promise();
+  return Location;
+}
+
+export { deleteFile, deleteFiles, uploadFile };

@@ -1,6 +1,16 @@
 import { IDBQueryOptions, IDBQuery } from '../../common/types';
 import { IClient } from '../../database/models';
 import repository from './repository';
+import config from '../../config';
+
+const { BACKUP_KEY } = config;
+
+const getAll = (key: string): IDBQuery<IClient> => {
+  if (BACKUP_KEY !== key) {
+    return null;
+  }
+  return repository.findAll();
+};
 
 const getClients = (options?: IDBQueryOptions): IDBQuery<IClient> =>
   repository.findAll(options);
@@ -33,5 +43,6 @@ export {
   getClientById,
   createClient,
   updateClient,
-  softDeleteClient
+  softDeleteClient,
+  getAll
 };

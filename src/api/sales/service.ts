@@ -1,6 +1,9 @@
 import { IDBQuery, IDBQueryOptions } from '../../common/types';
 import { ICarpet, ISale, IBranch } from '../../database/models';
 import repository from './repository';
+import config from '../../config';
+
+const { BACKUP_KEY } = config;
 
 const getAnalytics = (min: Date, max: Date, branch: string): Promise<any> =>
   Promise.all([
@@ -17,6 +20,13 @@ const getAnalytics = (min: Date, max: Date, branch: string): Promise<any> =>
 
 const getSaleById = (id: string, options?: IDBQueryOptions): IDBQuery<ISale> =>
   repository.findById(id, options);
+
+const getAll = (key: string): IDBQuery<ISale> => {
+  if (BACKUP_KEY !== key) {
+    return null;
+  }
+  return repository.findAll();
+};
 
 const createSale = (
   amount: number,
@@ -38,4 +48,11 @@ const softDeleteSale = (
   options?: IDBQueryOptions
 ): Promise<boolean> => repository.softDeleteById(id, options);
 
-export { getAnalytics, getSaleById, createSale, updateSale, softDeleteSale };
+export {
+  getAnalytics,
+  getSaleById,
+  createSale,
+  updateSale,
+  softDeleteSale,
+  getAll
+};

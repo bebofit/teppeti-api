@@ -24,4 +24,5 @@ export interface IConfig {
   MAILER_SENDER: string;
   NODE_ENV: 'development' | 'testing' | 'staging' | 'production';
   PORT: number;
+  BACKUP_KEY: string;
 }
