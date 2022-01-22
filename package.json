@@ -78,7 +78,7 @@
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
-    "nanoid": "^2.1.8",
+    "nanoid": "^3.1.31",
     "nodemailer": "^6.4.2",
     "rate-limiter-flexible": "^1.2.2"
   },
